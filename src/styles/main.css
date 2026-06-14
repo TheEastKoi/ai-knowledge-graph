@@ -208,3 +208,10 @@ body {
   border-top: 1px solid var(--color-border-subtle);
   margin: 16px 0;
 }
+
+/* KaTeX 深色主题适配 */
+.katex { color: var(--color-text-primary) !important; font-size: 1.05em; }
+.katex-display { margin: 12px 0 !important; }
+.katex-display > .katex { font-size: 1.1em; }
+.markdown-body .katex .mathnormal { color: var(--color-text-secondary); }
+.markdown-body .katex .mord { color: var(--color-text-secondary); }

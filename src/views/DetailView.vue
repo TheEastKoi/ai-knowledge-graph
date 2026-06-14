@@ -82,6 +82,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { marked } from 'marked'
+import katex from 'katex'
 import { useKnowledgeStore } from '@/stores/knowledgeStore'
 import CodeBlock from '@/components/common/CodeBlock.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -93,10 +94,37 @@ marked.setOptions({
   gfm: true,
 })
 
+function renderLatex(text: string): string {
+  if (!text) return ''
+  let result = text
+
+  // Render block math: $$...$$
+  result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_: string, formula: string) => {
+    try {
+      return katex.renderToString(formula.trim(), { displayMode: true, throwOnError: false })
+    } catch {
+      return `<pre>${formula}</pre>`
+    }
+  })
+
+  // Render inline math: $...$ (but not $$)
+  result = result.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_: string, formula: string) => {
+    try {
+      return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false })
+    } catch {
+      return `<code>${formula}</code>`
+    }
+  })
+
+  return result
+}
+
 function renderMarkdown(text: string): string {
   if (!text) return ''
   try {
-    return marked.parse(text) as string
+    // Render LaTeX first, then markdown
+    const withMath = renderLatex(text)
+    return marked.parse(withMath) as string
   } catch {
     return text.replace(/\n/g, '<br>')
   }

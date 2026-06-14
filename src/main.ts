@@ -1,5 +1,6 @@
 import './styles/main.css'
 import 'prismjs/themes/prism-tomorrow.css'
+import 'katex/dist/katex.min.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
