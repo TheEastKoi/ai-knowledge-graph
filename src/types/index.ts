@@ -21,7 +21,7 @@ export interface InterviewQuestion {
 export interface Reference {
   title: string
   url: string
-  type: 'paper' | 'docs' | 'blog' | 'github' | 'video'
+  type: 'paper' | 'docs' | 'blog' | 'github' | 'video' | 'book'
 }
 
 export interface ConceptNode {
