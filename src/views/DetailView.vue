@@ -14,7 +14,11 @@
 
       <section class="mb-8">
         <h2 class="text-[15px] font-semibold mb-3" style="color: var(--color-text-primary);">Core Definition</h2>
-        <div class="glass-panel p-5 text-[14px] leading-relaxed" style="color: var(--color-text-secondary);" v-text="node.fullDescription || node.desc" />
+        <div
+          class="glass-panel p-5 text-[14px] leading-relaxed markdown-body"
+          style="color: var(--color-text-secondary);"
+          v-html="renderMarkdown(node.fullDescription || node.desc)"
+        />
       </section>
 
       <section class="mb-8">
@@ -42,7 +46,7 @@
         <div class="space-y-3">
           <div v-for="qa in node.interviewQuestions" :key="qa.id" class="glass-panel p-4">
             <p class="text-[14px] font-medium mb-2" style="color: var(--color-text-primary);">Q: {{ qa.question }}</p>
-            <p class="text-[13px] leading-relaxed pl-4 border-l-2" style="color: var(--color-text-muted); border-color: var(--color-border-accent);">{{ qa.answer }}</p>
+            <div class="text-[13px] leading-relaxed pl-4 border-l-2 markdown-body" style="color: var(--color-text-muted); border-color: var(--color-border-accent);" v-html="renderMarkdown(qa.answer)" />
           </div>
         </div>
       </section>
@@ -77,10 +81,26 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { marked } from 'marked'
 import { useKnowledgeStore } from '@/stores/knowledgeStore'
 import CodeBlock from '@/components/common/CodeBlock.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import type { Category } from '@/types'
+
+// Configure marked
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+})
+
+function renderMarkdown(text: string): string {
+  if (!text) return ''
+  try {
+    return marked.parse(text) as string
+  } catch {
+    return text.replace(/\n/g, '<br>')
+  }
+}
 
 const route = useRoute()
 const knowledgeStore = useKnowledgeStore()

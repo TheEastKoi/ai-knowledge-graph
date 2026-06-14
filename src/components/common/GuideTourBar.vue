@@ -27,7 +27,7 @@
       <!-- Navigation -->
       <div class="flex items-center gap-2 shrink-0">
         <button
-          @click="prev"
+          @click="navigateTour('prev')"
           :disabled="appStore.guidedTourIndex === 0"
           class="px-4 py-2 rounded-lg text-[13px] font-medium border transition-all duration-200 flex items-center gap-2"
           :style="appStore.guidedTourIndex === 0
@@ -42,7 +42,7 @@
         </span>
 
         <button
-          @click="next"
+          @click="navigateTour('next')"
           :disabled="appStore.guidedTourIndex >= appStore.guidedTourPath.length - 1"
           class="px-4 py-2 rounded-lg text-[13px] font-medium border transition-all duration-200 flex items-center gap-2"
           :style="appStore.guidedTourIndex >= appStore.guidedTourPath.length - 1
@@ -67,31 +67,51 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useKnowledgeStore } from '@/stores/knowledgeStore'
 
 const appStore = useAppStore()
 const knowledgeStore = useKnowledgeStore()
+const route = useRoute()
+const router = useRouter()
 
 const currentNode = computed(() => {
   const id = appStore.guidedTourPath[appStore.guidedTourIndex]
   return id ? knowledgeStore.getNodeById(id) : null
 })
 
-function next() { appStore.tourNext() }
-function prev() { appStore.tourPrev() }
+function navigateTour(direction: 'next' | 'prev') {
+  if (direction === 'next') {
+    appStore.tourNext()
+  } else {
+    appStore.tourPrev()
+  }
+
+  const newId = appStore.guidedTourPath[appStore.guidedTourIndex]
+  if (!newId) return
+
+  // Sync router: if on detail page, navigate to new detail; if elsewhere, go to graph
+  if (route.name === 'detail') {
+    router.replace({ name: 'detail', params: { id: newId } })
+  } else if (route.name !== 'graph') {
+    router.replace({ name: 'graph', hash: '#' + newId })
+  } else {
+    // On graph view, update hash
+    router.replace({ hash: '#' + newId })
+  }
+}
 
 // Keyboard shortcuts
 function handleKeydown(e: KeyboardEvent) {
-  // Don't trigger if typing in an input
   if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
 
   if (e.key === 'ArrowRight') {
     e.preventDefault()
-    appStore.tourNext()
+    navigateTour('next')
   } else if (e.key === 'ArrowLeft') {
     e.preventDefault()
-    appStore.tourPrev()
+    navigateTour('prev')
   } else if (e.key === 'Escape') {
     e.preventDefault()
     appStore.stopGuidedTour()
