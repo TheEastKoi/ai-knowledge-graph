@@ -214,7 +214,7 @@ function initGraph() {
     .attr('fill', (d: any) => colors[d.category as keyof typeof colors].stroke)
     .attr('opacity', 0.6)
 
-  // Text labels - only show for level 1-2 by default, all on hover
+  // Text labels - always visible
   node.append('text')
     .attr('class', 'node-label')
     .attr('dy', (d: any) => radiusMap[d.level] + 13)
@@ -222,7 +222,7 @@ function initGraph() {
     .attr('fill', '#94a3b8')
     .attr('font-size', (d: any) => d.level <= 2 ? '11px' : '10px')
     .attr('font-weight', '500')
-    .attr('opacity', (d: any) => d.level <= 2 ? 0.8 : 0)
+    .attr('opacity', 0.8)
     .text((d: any) => {
       const n = d.name.length > 10 ? d.name.slice(0, 9) + '…' : d.name
       return n
@@ -257,7 +257,7 @@ function initGraph() {
         .attr('fill-opacity', 0.2)
       sel.select('.node-label')
         .transition().duration(300)
-        .attr('opacity', d.level <= 2 ? 0.8 : 0)
+        .attr('opacity', 0.8)
     })
     .on('click', (event: MouseEvent, d: any) => {
       event.stopPropagation()
@@ -340,7 +340,7 @@ function resetHighlights() {
     .attr('stroke-width', 0.8)
   svg.selectAll('.node-label')
     .transition().duration(300)
-    .attr('opacity', (d: any) => d.level <= 2 ? 0.8 : 0)
+    .attr('opacity', 0.8)
   svg.selectAll('.node-glow')
     .transition().duration(300)
     .attr('opacity', 0.3)
