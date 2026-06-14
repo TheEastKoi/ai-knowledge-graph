@@ -24,7 +24,26 @@ export const useAppStore = defineStore('app', {
     learningProgress: loadProgress(),
     focusedLevel: null as Level | null,
     isSearchOpen: false,
+    // Guided tour
+    isGuidedTour: false,
+    guidedTourIndex: 0,
   }),
+  getters: {
+    guidedTourPath: () => {
+      // The recommended learning order
+      return [
+        'llm', 'agent',
+        'math-foundation', 'dl-foundation', 'transformer', 'attention', 'prompt-engineering',
+        'pretrain', 'bpe', 'sft', 'rlhf', 'dpo', 'emergence', 'cot',
+        'planning', 'memory', 'toolcall',
+        'react', 'plan-execute', 'reflection', 'memory-layers',
+        'rag', 'embedding', 'lora', 'context-window',
+        'mcp', 'multiagent', 'langchain', 'autogen', 'crewai', 'a2a',
+        'quantization', 'agent-evaluation', 'agent-security',
+        'agent-reliability', 'agent-vs-chatbot'
+      ]
+    },
+  },
   actions: {
     selectNode(nodeId: string | null) {
       this.selectedNodeId = nodeId
@@ -52,6 +71,35 @@ export const useAppStore = defineStore('app', {
     },
     focusLevel(level: Level | null) {
       this.focusedLevel = level
+    },
+    // Guided tour actions
+    startGuidedTour() {
+      this.isGuidedTour = true
+      this.guidedTourIndex = 0
+      this.mode = 'normal'
+      const firstId = this.guidedTourPath[0]
+      if (firstId) this.selectNode(firstId)
+    },
+    stopGuidedTour() {
+      this.isGuidedTour = false
+    },
+    tourNext() {
+      if (this.guidedTourIndex < this.guidedTourPath.length - 1) {
+        this.guidedTourIndex++
+        this.selectNode(this.guidedTourPath[this.guidedTourIndex])
+      }
+    },
+    tourPrev() {
+      if (this.guidedTourIndex > 0) {
+        this.guidedTourIndex--
+        this.selectNode(this.guidedTourPath[this.guidedTourIndex])
+      }
+    },
+    tourGoTo(index: number) {
+      if (index >= 0 && index < this.guidedTourPath.length) {
+        this.guidedTourIndex = index
+        this.selectNode(this.guidedTourPath[index])
+      }
     },
   },
 })

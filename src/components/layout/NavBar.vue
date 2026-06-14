@@ -38,6 +38,16 @@
         <span>搜索</span>
       </button>
 
+      <!-- Guided Tour button -->
+      <button
+        v-if="!appStore.isGuidedTour"
+        @click="appStore.startGuidedTour()"
+        class="px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 border flex items-center gap-1.5"
+        style="border-color: var(--color-titanium-gold); color: var(--color-titanium-gold); background: rgba(234,179,8,0.08);"
+      >
+        <span>▶</span> 一键引导
+      </button>
+
       <!-- Mode toggle buttons -->
       <button
         v-for="modeBtn in modeButtons" :key="modeBtn.mode"
