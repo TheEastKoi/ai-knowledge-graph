@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import * as d3 from 'd3'
 import { useKnowledgeStore } from '@/stores/knowledgeStore'
 import { useAppStore } from '@/stores/appStore'
@@ -218,6 +218,41 @@ onMounted(() => {
 onUnmounted(() => {
   simulation?.stop()
   window.removeEventListener('resize', handleResize)
+})
+
+// Guide mode and interview mode highlights
+watch(() => [appStore.mode, appStore.focusedLevel] as const, ([mode, level]) => {
+  if (!svgRef.value) return
+  const svg = d3.select(svgRef.value)
+
+  if (mode === 'guide' && level) {
+    const levelSet = new Set(
+      knowledgeStore.nodes
+        .filter(n => n.level <= level)
+        .map(n => n.id)
+    )
+    svg.selectAll('.node').transition().duration(400)
+      .attr('opacity', (d: any) => levelSet.has(d.id) ? 1 : 0.12)
+    svg.selectAll('.link').transition().duration(400)
+      .attr('stroke-opacity', (l: any) =>
+        levelSet.has(l.source.id) && levelSet.has(l.target.id) ? 0.8 : 0.04
+      )
+  } else if (mode === 'interview') {
+    const interviewIds = new Set([
+      'llm','agent','transformer','rag','memory','toolcall',
+      'planning','react','multiagent','agent-evaluation',
+      'agent-security','agent-reliability','cot','lora','sft'
+    ])
+    svg.selectAll('.node').transition().duration(400)
+      .attr('opacity', (d: any) => interviewIds.has(d.id) ? 1 : 0.12)
+    svg.selectAll('.link').transition().duration(400)
+      .attr('stroke-opacity', (l: any) =>
+        interviewIds.has(l.source.id) && interviewIds.has(l.target.id) ? 0.8 : 0.04
+      )
+  } else {
+    svg.selectAll('.node').transition().duration(400).attr('opacity', 1)
+    svg.selectAll('.link').transition().duration(400).attr('stroke-opacity', 0.6)
+  }
 })
 
 defineExpose({ highlightConnections, resetHighlights })
