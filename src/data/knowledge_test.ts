@@ -9,7 +9,7 @@ export const knowledgeNodes: ConceptNode[] = [
     level: 1,
     difficulty: 'beginner',
     desc: '基于海量文本预训练的深度神经网络模型，核心能力是下一词预测，是当前人工智能的核心载体。拥有百亿级以上参数，具备语言理解、生成、推理等通用能力。',
-    fullDescription: '【LLM测试替换】',
+    fullDescription: 'TEST REPLACEMENT',
     role: '整个AI领域的核心底座，为所有上层应用提供认知能力',
     codeExamples: [],
     prerequisites: [],
