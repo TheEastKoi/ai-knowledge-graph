@@ -17,7 +17,7 @@
         <div
           class="glass-panel p-5 text-[14px] leading-relaxed markdown-body"
           style="color: var(--color-text-secondary);"
-          v-html="renderMarkdown(node.fullDescription || node.desc)"
+          v-html="renderMarkdown(node.fullDescription || node.desc, node.formulaAnnotations || [])"
         />
       </section>
 
@@ -52,7 +52,7 @@
         <div class="space-y-3">
           <div v-for="qa in node.interviewQuestions" :key="qa.id" class="glass-panel p-4">
             <p class="text-[14px] font-medium mb-2" style="color: var(--color-text-primary);">Q: {{ qa.question }}</p>
-            <div class="text-[13px] leading-relaxed pl-4 border-l-2 markdown-body" style="color: var(--color-text-muted); border-color: var(--color-border-accent);" v-html="renderMarkdown(qa.answer)" />
+            <div class="text-[13px] leading-relaxed pl-4 border-l-2 markdown-body" style="color: var(--color-text-muted); border-color: var(--color-border-accent);" v-html="renderMarkdown(qa.answer, [])" />
           </div>
         </div>
       </section>
@@ -93,7 +93,7 @@ import { useKnowledgeStore } from '@/stores/knowledgeStore'
 import CodeBlock from '@/components/common/CodeBlock.vue'
 import FormulaCard from '@/components/common/FormulaCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
-import type { Category } from '@/types'
+import type { Category, FormulaAnnotation } from '@/types'
 
 // Configure marked
 marked.setOptions({
@@ -101,17 +101,67 @@ marked.setOptions({
   gfm: true,
 })
 
-function renderLatex(text: string): string {
+// Escape HTML for safe embedding in attributes/data
+function escHtml(s: string): string {
+  return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+}
+
+// Render a single formula with optional annotation
+function renderFormulaBlock(formula: string, annotations: FormulaAnnotation[]): string {
+  const trimmed = formula.trim()
+  // Try to find matching annotation by comparing formula text
+  const match = annotations.find(a => {
+    // Normalize both for comparison: remove whitespace
+    const n1 = a.formula.replace(/\s+/g, '')
+    const n2 = trimmed.replace(/\s+/g, '')
+    return n1 === n2 || n1.includes(n2) || n2.includes(n1.slice(0, 30))
+  })
+
+  let katexHtml = ''
+  try {
+    katexHtml = katex.renderToString(trimmed, { displayMode: true, throwOnError: false })
+  } catch {
+    katexHtml = `<pre>${trimmed}</pre>`
+  }
+
+  if (match) {
+    // Build variable table rows
+    const varRows = match.variables.map(v =>
+      `<tr><td class="fvs">${escHtml(v.symbol)}</td><td class="fvn">${escHtml(v.name)}</td><td class="fvm">${escHtml(v.meaning)}</td></tr>`
+    ).join('')
+
+    return `
+    <div class="inline-formula" onclick="this.classList.toggle('expanded')">
+      <div class="if-display">${katexHtml}</div>
+      <div class="if-toggle"><span>▸ 这个公式在做什么？</span></div>
+      <div class="if-detail">
+        <div class="if-purpose">${escHtml(match.purpose)}</div>
+        <div class="if-table-wrap"><table class="if-table">
+          <thead><tr><th>符号</th><th>名称</th><th>含义</th></tr></thead>
+          <tbody>${varRows}</tbody>
+        </table></div>
+      </div>
+    </div>`
+  }
+
+  // No matching annotation - still add basic toggle
+  return `
+  <div class="inline-formula no-annot" onclick="this.classList.toggle('expanded')">
+    <div class="if-display">${katexHtml}</div>
+    <div class="if-toggle"><span>▸ 这是什么？</span></div>
+    <div class="if-detail">
+      <div class="if-purpose">该公式暂无详细注释。原始 LaTeX：<code>${escHtml(trimmed)}</code></div>
+    </div>
+  </div>`
+}
+
+function renderLatex(text: string, annotations: FormulaAnnotation[]): string {
   if (!text) return ''
   let result = text
 
-  // Render block math: $$...$$
+  // Render block math: $$...$$ with interactive annotation
   result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_: string, formula: string) => {
-    try {
-      return katex.renderToString(formula.trim(), { displayMode: true, throwOnError: false })
-    } catch {
-      return `<pre>${formula}</pre>`
-    }
+    return renderFormulaBlock(formula, annotations)
   })
 
   // Render inline math: $...$ (but not $$)
@@ -126,11 +176,10 @@ function renderLatex(text: string): string {
   return result
 }
 
-function renderMarkdown(text: string): string {
+function renderMarkdown(text: string, annotations: FormulaAnnotation[]): string {
   if (!text) return ''
   try {
-    // Render LaTeX first, then markdown
-    const withMath = renderLatex(text)
+    const withMath = renderLatex(text, annotations)
     return marked.parse(withMath) as string
   } catch {
     return text.replace(/\n/g, '<br>')

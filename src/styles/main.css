@@ -215,3 +215,93 @@ body {
 .katex-display > .katex { font-size: 1.1em; }
 .markdown-body .katex .mathnormal { color: var(--color-text-secondary); }
 .markdown-body .katex .mord { color: var(--color-text-secondary); }
+
+/* 行内公式交互卡片 */
+.inline-formula {
+  margin: 14px 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(9, 20, 40, 0.5);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.inline-formula:hover {
+  border-color: var(--color-border-accent);
+}
+.inline-formula .if-display {
+  padding: 14px 18px 8px;
+  overflow-x: auto;
+}
+.inline-formula .if-toggle {
+  padding: 4px 18px 10px;
+  font-size: 11px;
+  color: var(--color-arc-blue-light);
+  user-select: none;
+}
+.inline-formula .if-toggle span {
+  transition: color 0.2s;
+}
+.inline-formula:hover .if-toggle span {
+  color: var(--color-arc-blue-pale);
+}
+.inline-formula .if-detail {
+  display: none;
+  border-top: 1px solid var(--color-border-subtle);
+  padding: 14px 18px;
+}
+.inline-formula.expanded .if-detail {
+  display: block;
+}
+.inline-formula.expanded .if-toggle span::before {
+  content: "▾ ";
+}
+.inline-formula .if-purpose {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: rgba(14,165,233,0.06);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+}
+.inline-formula.no-annot .if-purpose {
+  background: rgba(239,68,68,0.05);
+  border-color: rgba(239,68,68,0.15);
+}
+.inline-formula .if-table-wrap {
+  overflow-x: auto;
+}
+.inline-formula .if-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.inline-formula .if-table th {
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--color-border-accent);
+  color: var(--color-text-dim);
+  font-weight: 600;
+  font-size: 11px;
+}
+.inline-formula .if-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: top;
+}
+.inline-formula .if-table .fvs {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--color-titanium-gold);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.inline-formula .if-table .fvn {
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.inline-formula .if-table .fvm {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
