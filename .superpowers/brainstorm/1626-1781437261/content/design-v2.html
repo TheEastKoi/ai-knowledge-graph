@@ -1,0 +1,315 @@
+<style>
+  .design-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+  }
+  .design-card-header {
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .design-preview {
+    padding: 0;
+    position: relative;
+  }
+  .label-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .label-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+</style>
+
+<h2>平台整体设计方向</h2>
+<p class="subtitle">为 AI/LLM/Agent 知识学习平台定制的三种设计语言，各有侧重</p>
+
+<!-- Option A -->
+<div class="design-card" style="background: #0a0a0b;">
+  <div class="design-card-header" style="background: #111113;">
+    <span class="label-tag" style="background: rgba(255,255,255,0.08); color: #a1a1aa;">方向 A</span>
+    <span style="color: #e4e4e7;">Linear 式极简工具风</span>
+    <span style="color: #52525b; font-size: 12px; margin-left: auto;">参考: Linear, Raycast, Vercel</span>
+  </div>
+  <div class="design-preview" style="padding: 28px;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 28px; height: 28px; background: #e4e4e7; border-radius: 6px;"></div>
+        <span style="font-size: 15px; font-weight: 600; color: #e4e4e7; letter-spacing: -0.01em;">AI Knowledge Graph</span>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <div style="padding: 6px 12px; background: rgba(255,255,255,0.06); border-radius: 6px; font-size: 12px; color: #a1a1aa;">学习模式</div>
+        <div style="padding: 6px 12px; background: rgba(255,255,255,0.06); border-radius: 6px; font-size: 12px; color: #a1a1aa;">面试模式</div>
+        <div style="padding: 6px 12px; background: #e4e4e7; border-radius: 6px; font-size: 12px; color: #0a0a0b; font-weight: 500;">搜索</div>
+      </div>
+    </div>
+    <!-- Main Layout -->
+    <div style="display: flex; gap: 16px; height: 260px;">
+      <!-- Graph Area -->
+      <div style="flex: 1; background: #111113; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+          <svg width="280" height="160" viewBox="0 0 280 160">
+            <defs>
+              <linearGradient id="ga" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#e4e4e7" stop-opacity="0.08"/>
+                <stop offset="100%" stop-color="#e4e4e7" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <line x1="40" y1="60" x2="100" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <line x1="40" y1="60" x2="100" y2="90" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <line x1="100" y1="40" x2="170" y2="50" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <line x1="100" y1="90" x2="170" y2="80" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <line x1="170" y1="50" x2="240" y2="60" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <line x1="170" y1="80" x2="240" y2="90" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <circle cx="40" cy="60" r="18" fill="#18181b" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+            <circle cx="100" cy="40" r="14" fill="#18181b" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+            <circle cx="100" cy="90" r="14" fill="#18181b" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+            <circle cx="170" cy="50" r="12" fill="#18181b" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="170" cy="80" r="12" fill="#18181b" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="240" cy="60" r="12" fill="#18181b" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="240" cy="90" r="12" fill="#18181b" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div style="position: absolute; bottom: 10px; left: 12px; right: 12px; display: flex; gap: 6px;">
+          <div style="padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; font-size: 10px; color: #71717a;">L1 基础</div>
+          <div style="padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; font-size: 10px; color: #71717a;">L2 原理</div>
+          <div style="padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; font-size: 10px; color: #71717a;">L3 组件</div>
+        </div>
+      </div>
+      <!-- Detail Panel -->
+      <div style="width: 280px; background: #111113; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); padding: 20px;">
+        <div style="width: 60px; height: 8px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-bottom: 12px;"></div>
+        <div style="width: 40%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 2px; margin-bottom: 20px;"></div>
+        <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 8px;"></div>
+        <div style="width: 95%; height: 4px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 8px;"></div>
+        <div style="width: 80%; height: 4px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 16px;"></div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <div style="padding: 5px 10px; background: rgba(255,255,255,0.05); border-radius: 5px; font-size: 11px; color: #a1a1aa;">Transformer</div>
+          <div style="padding: 5px 10px; background: rgba(255,255,255,0.05); border-radius: 5px; font-size: 11px; color: #a1a1aa;">Attention</div>
+          <div style="padding: 5px 10px; background: rgba(255,255,255,0.05); border-radius: 5px; font-size: 11px; color: #a1a1aa;">预训练</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; display: flex; gap: 16px;">
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">调性</div>
+        <div style="font-size: 13px; color: #a1a1aa;">极简工具 · 黑白灰为主 · 零装饰 · 键盘驱动 · 字体即界面</div>
+      </div>
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">适合</div>
+        <div style="font-size: 13px; color: #a1a1aa;">追求效率的开发者，内容密度高，像用 IDE 一样浏览知识</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Option B -->
+<div class="design-card" style="background: #0c0c10;">
+  <div class="design-card-header" style="background: #121218;">
+    <span class="label-tag" style="background: rgba(99,102,241,0.15); color: #818cf8;">方向 B</span>
+    <span style="color: #e4e4e7;">赛博学术风</span>
+    <span style="color: #52525b; font-size: 12px; margin-left: auto;">参考: Anthropic Docs, OpenAI Cookbook, Mistral</span>
+  </div>
+  <div class="design-preview" style="padding: 28px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+      <div>
+        <div style="font-size: 10px; color: #818cf8; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 2px;">Knowledge Platform</div>
+        <div style="font-size: 17px; font-weight: 600; color: #f4f4f5; letter-spacing: -0.01em;">大模型 & AI Agent 知识网络</div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div style="padding: 7px 14px; border: 1px solid rgba(129,140,248,0.2); border-radius: 20px; font-size: 12px; color: #818cf8;">引导模式</div>
+        <div style="padding: 7px 14px; background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.25); border-radius: 20px; font-size: 12px; color: #a5b4fc;">面试模式</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 16px; height: 260px;">
+      <div style="flex: 1; background: #121218; border-radius: 12px; border: 1px solid rgba(129,140,248,0.08); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(129,140,248,0.3), transparent);"></div>
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+          <svg width="280" height="160">
+            <line x1="35" y1="80" x2="95" y2="50" stroke="rgba(129,140,248,0.15)" stroke-width="1.2"/>
+            <line x1="35" y1="80" x2="95" y2="110" stroke="rgba(129,140,248,0.15)" stroke-width="1.2"/>
+            <line x1="95" y1="50" x2="165" y2="60" stroke="rgba(129,140,248,0.12)" stroke-width="1"/>
+            <line x1="95" y1="110" x2="165" y2="100" stroke="rgba(129,140,248,0.12)" stroke-width="1"/>
+            <line x1="165" y1="60" x2="245" y2="70" stroke="rgba(129,140,248,0.1)" stroke-width="1"/>
+            <line x1="165" y1="100" x2="245" y2="90" stroke="rgba(129,140,248,0.1)" stroke-width="1"/>
+            <circle cx="35" cy="80" r="22" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5" opacity="0.8"/>
+            <circle cx="95" cy="50" r="15" fill="#1e1b4b" stroke="rgba(129,140,248,0.5)" stroke-width="1.2"/>
+            <circle cx="95" cy="110" r="15" fill="#172554" stroke="rgba(96,165,250,0.5)" stroke-width="1.2"/>
+            <circle cx="165" cy="60" r="12" fill="#172554" stroke="rgba(129,140,248,0.35)" stroke-width="1"/>
+            <circle cx="165" cy="100" r="12" fill="#172554" stroke="rgba(129,140,248,0.35)" stroke-width="1"/>
+            <circle cx="245" cy="70" r="12" fill="#172554" stroke="rgba(129,140,248,0.25)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div style="position: absolute; top: 14px; left: 14px; font-size: 9px; color: rgba(129,140,248,0.4); text-transform: uppercase; letter-spacing: 0.1em;">Exploration Graph</div>
+      </div>
+      <div style="width: 280px; background: #121218; border-radius: 12px; border: 1px solid rgba(129,140,248,0.08); padding: 20px;">
+        <div style="padding: 2px 8px; background: rgba(129,140,248,0.1); border-radius: 10px; font-size: 10px; color: #818cf8; display: inline-block; margin-bottom: 10px;">第3层 · 关键组件</div>
+        <div style="width: 70%; height: 7px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-bottom: 6px;"></div>
+        <div style="width: 90%; height: 5px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 5px;"></div>
+        <div style="width: 85%; height: 5px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 5px;"></div>
+        <div style="width: 60%; height: 5px; background: rgba(255,255,255,0.04); border-radius: 2px; margin-bottom: 18px;"></div>
+        <div style="font-size: 11px; color: #71717a; margin-bottom: 6px;">前置知识</div>
+        <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 14px;">
+          <div style="padding: 4px 10px; border: 1px solid rgba(129,140,248,0.15); border-radius: 12px; font-size: 11px; color: #a5b4fc;">Agent 定义</div>
+          <div style="padding: 4px 10px; border: 1px solid rgba(129,140,248,0.15); border-radius: 12px; font-size: 11px; color: #a5b4fc;">思维链</div>
+        </div>
+        <div style="font-size: 11px; color: #71717a; margin-bottom: 6px;">下一步</div>
+        <div style="display: flex; gap: 5px;">
+          <div style="padding: 4px 10px; background: rgba(52,211,153,0.1); border-radius: 12px; font-size: 11px; color: #34d399;">ReAct</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; display: flex; gap: 16px;">
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">调性</div>
+        <div style="font-size: 13px; color: #a1a1aa;">科技学术 · 靛蓝为主色 · 精致边框 · 学术排版 · 代码块友好</div>
+      </div>
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">适合</div>
+        <div style="font-size: 13px; color: #a1a1aa;">深度学习技术内容，带代码示例，像阅读高质量技术文档</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Option C -->
+<div class="design-card" style="background: #08080c;">
+  <div class="design-card-header" style="background: #0e0e14;">
+    <span class="label-tag" style="background: rgba(34,211,238,0.12); color: #22d3ee;">方向 C</span>
+    <span style="color: #e4e4e7;">暗色 Bento 仪表盘</span>
+    <span style="color: #52525b; font-size: 12px; margin-left: auto;">参考: Apple 设计语言, macOS 系统应用</span>
+  </div>
+  <div class="design-preview" style="padding: 28px;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px; gap: 12px;">
+      <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 14px;">🧠</div>
+      <div>
+        <div style="font-size: 14px; font-weight: 600; color: #e4e4e7; letter-spacing: -0.01em;">AI Knowledge</div>
+        <div style="font-size: 11px; color: #52525b;">30+ concepts · 5 levels</div>
+      </div>
+    </div>
+    <!-- Bento Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 280px; grid-template-rows: 140px 140px; gap: 10px;">
+      <!-- Graph Card - spans 2 rows 2 cols -->
+      <div style="grid-row: 1 / 3; grid-column: 1 / 3; background: #0e0e14; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; padding: 16px;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 8px;">Knowledge Graph</div>
+        <div style="position: absolute; inset: 40px 16px 16px; display: flex; align-items: center; justify-content: center;">
+          <svg width="320" height="160" viewBox="0 0 320 160">
+            <line x1="30" y1="80" x2="110" y2="40" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="30" y1="80" x2="110" y2="120" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="110" y1="40" x2="190" y2="55" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="110" y1="120" x2="190" y2="105" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="190" y1="55" x2="280" y2="65" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="190" y1="105" x2="280" y2="95" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <circle cx="30" cy="80" r="24" fill="#1e293b" stroke="rgba(59,130,246,0.6)" stroke-width="1.5"/>
+            <circle cx="30" cy="80" r="8" fill="rgba(59,130,246,0.3)"/>
+            <circle cx="110" cy="40" r="16" fill="#1e293b" stroke="rgba(139,92,246,0.5)" stroke-width="1.2"/>
+            <circle cx="110" cy="120" r="16" fill="#1e293b" stroke="rgba(139,92,246,0.5)" stroke-width="1.2"/>
+            <circle cx="190" cy="55" r="13" fill="#1e293b" stroke="rgba(34,211,238,0.4)" stroke-width="1"/>
+            <circle cx="190" cy="105" r="13" fill="#1e293b" stroke="rgba(34,211,238,0.4)" stroke-width="1"/>
+            <circle cx="280" cy="65" r="13" fill="#1e293b" stroke="rgba(34,211,238,0.3)" stroke-width="1"/>
+            <circle cx="280" cy="95" r="13" fill="#1e293b" stroke="rgba(34,211,238,0.3)" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Card 1: Learning Path -->
+      <div style="background: #0e0e14; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); padding: 14px;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 8px;">Learning Path</div>
+        <div style="display: flex; gap: 5px;">
+          <div style="flex: 1; height: 4px; background: rgba(59,130,246,0.4); border-radius: 2px;"></div>
+          <div style="flex: 1; height: 4px; background: rgba(59,130,246,0.25); border-radius: 2px;"></div>
+          <div style="flex: 1; height: 4px; background: rgba(59,130,246,0.25); border-radius: 2px;"></div>
+          <div style="flex: 1; height: 4px; background: rgba(59,130,246,0.15); border-radius: 2px;"></div>
+          <div style="flex: 1; height: 4px; background: rgba(59,130,246,0.1); border-radius: 2px;"></div>
+        </div>
+        <div style="font-size: 12px; color: #a1a1aa; margin-top: 8px;">当前: Level 2 - 核心原理</div>
+      </div>
+      <!-- Card 2: Stats -->
+      <div style="background: #0e0e14; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); padding: 14px;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 6px;">Concepts</div>
+        <div style="font-size: 28px; font-weight: 600; color: #e4e4e7; letter-spacing: -0.02em;">33</div>
+        <div style="font-size: 11px; color: #52525b; margin-top: 2px;">7 个待学习</div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; display: flex; gap: 16px;">
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">调性</div>
+        <div style="font-size: 13px; color: #a1a1aa;">Apple 式 Bento 网格 · 磨砂玻璃面板 · 大圆角 · 精致阴影 · 三色点缀</div>
+      </div>
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #52525b; margin-bottom: 4px;">适合</div>
+        <div style="font-size: 13px; color: #a1a1aa;">喜欢精致的现代应用风格，像用 Apple 原生 App 一样浏览知识</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options" style="margin-top: 16px;">
+  <div class="option" data-choice="direction-a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Linear 极简工具风</h3>
+      <p>极致克制，黑白灰为主，内容即界面。适合追求效率的硬核开发者。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="direction-b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>赛博学术风</h3>
+      <p>靛蓝主色调，学术排版 + 科技感边框，像看高质量技术文档。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="direction-c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>暗色 Bento 仪表盘</h3>
+      <p>Apple 设计语言，Bento 网格 + 磨砂面板，现代精致应用风格。</p>
+    </div>
+  </div>
+</div>
+
+<div class="options" data-multiselect style="margin-top: 32px;">
+  <p class="subtitle" style="margin-bottom: 12px;">架构偏好（可多选）</p>
+  <div class="option" data-choice="arch-graph" onclick="toggleSelect(this)">
+    <div class="letter">1</div>
+    <div class="content">
+      <h3>图谱为主 + 详情侧栏</h3>
+      <p>保持现有布局思路，Vue 组件化重构，D3 升级到现代版本，增加搜索/过滤/收藏</p>
+    </div>
+  </div>
+  <div class="option" data-choice="arch-multiview" onclick="toggleSelect(this)">
+    <div class="letter">2</div>
+    <div class="content">
+      <h3>多视图切换</h3>
+      <p>图谱 + 列表 + 路线图 + 面试题库，多种浏览模式，使用 Vue Router 管理路由</p>
+    </div>
+  </div>
+  <div class="option" data-choice="arch-code" onclick="toggleSelect(this)">
+    <div class="letter">3</div>
+    <div class="content">
+      <h3>加入代码示例</h3>
+      <p>每个知识点附带 Python/JS 代码示例（如用 LangChain 实现 RAG 的代码）</p>
+    </div>
+  </div>
+  <div class="option" data-choice="arch-knowledge" onclick="toggleSelect(this)">
+    <div class="letter">4</div>
+    <div class="content">
+      <h3>补充详细知识</h3>
+      <p>扩充每个概念的解释、公式、架构图、最佳实践、面试常见问题</p>
+    </div>
+  </div>
+</div>

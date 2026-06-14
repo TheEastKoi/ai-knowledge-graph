@@ -1,0 +1,177 @@
+<style>
+  .palette-row { display: flex; gap: 12px; margin-bottom: 20px; }
+  .palette-card { flex: 1; border-radius: 12px; overflow: hidden; border: 2px solid transparent; cursor: default; transition: border-color 0.2s; background: #0e0e14; }
+  .palette-card:hover { border-color: rgba(255,255,255,0.2); }
+  .palette-preview { padding: 20px; }
+  .palette-info { padding: 14px 16px; background: #0a0a10; border-top: 1px solid rgba(255,255,255,0.05); }
+  .palette-name { font-size: 14px; font-weight: 600; color: #e4e4e7; margin-bottom: 4px; }
+  .palette-desc { font-size: 11px; color: #71717a; line-height: 1.4; }
+  .swatch-row { display: flex; gap: 6px; margin-bottom: 16px; }
+  .swatch { width: 28px; height: 28px; border-radius: 6px; }
+
+  .mini-ui { border-radius: 8px; padding: 12px; }
+  .mini-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mini-nav-dot { width: 16px; height: 16px; border-radius: 4px; }
+  .mini-nav-item { height: 6px; border-radius: 3px; }
+  .mini-card { border-radius: 8px; padding: 10px; margin-bottom: 6px; }
+  .mini-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 8px; }
+  .mini-line { height: 3px; border-radius: 2px; margin: 4px 0; }
+  .mini-circle-row { display: flex; gap: 14px; margin-top: 8px; }
+  .mini-circle { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; }
+  .hero-card { border: 2px solid rgba(220,38,38,0.4); }
+  .hero-label { position: absolute; top: -14px; right: 10px; background: linear-gradient(135deg, #dc2626, #ca8a04); color: #fff; font-size: 9px; padding: 3px 10px; border-radius: 10px; font-weight: 600; letter-spacing: 0.05em; }
+</style>
+
+<h2>钢铁侠配色 · 全新方案</h2>
+<p class="subtitle">金红装甲 x 暗色基底 x 电弧反应堆蓝光 — 被无数科幻 UI 致敬的经典配色</p>
+
+<!-- Iron Man - Hero -->
+<div class="palette-row">
+  <div class="palette-card hero-card" style="position: relative;" data-choice="color-ironman" onclick="toggleSelect(this)">
+    <div class="hero-label">NEW</div>
+    <div class="palette-preview" style="background: #0b0a09;">
+      <div class="swatch-row">
+        <div class="swatch" style="background: #dc2626;"></div>
+        <div class="swatch" style="background: #e11d48;"></div>
+        <div class="swatch" style="background: #ca8a04;"></div>
+        <div class="swatch" style="background: #facc15;"></div>
+        <div class="swatch" style="background: #0ea5e9;"></div>
+      </div>
+      <!-- Mini UI -->
+      <div class="mini-ui" style="background: #11100c; border: 1px solid rgba(220,38,38,0.12);">
+        <div class="mini-nav">
+          <div class="mini-nav-dot" style="background: linear-gradient(135deg, #dc2626, #ca8a04);"></div>
+          <div class="mini-nav-item" style="background: rgba(255,255,255,0.06); width: 60px;"></div>
+          <div class="mini-nav-item" style="background: rgba(202,138,4,0.25); width: 30px; margin-left: auto;"></div>
+        </div>
+        <div class="mini-card" style="background: rgba(202,138,4,0.04); border: 1px solid rgba(202,138,4,0.08); border-left: 2px solid #dc2626;">
+          <span class="mini-tag" style="background: rgba(220,38,38,0.12); color: #f87171;">L3 组件</span>
+          <div class="mini-line" style="background: rgba(255,255,255,0.1); width: 70%;"></div>
+          <div class="mini-line" style="background: rgba(255,255,255,0.06); width: 90%;"></div>
+          <div class="mini-circle-row">
+            <div class="mini-circle" style="width: 18px; height: 18px; background: #7f1d1d; border: 1px solid #dc2626; box-shadow: 0 0 6px rgba(220,38,38,0.3);">T</div>
+            <div class="mini-circle" style="width: 14px; height: 14px; background: #713f12; border: 1px solid rgba(202,138,4,0.6);">A</div>
+            <div class="mini-circle" style="width: 12px; height: 12px; background: #0c4a6e; border: 1px solid rgba(14,165,233,0.5); box-shadow: 0 0 4px rgba(14,165,233,0.3);">R</div>
+          </div>
+        </div>
+      </div>
+      <!-- Color roles -->
+      <div style="display: flex; gap: 8px; margin-top: 10px; font-size: 8px;">
+        <div style="display: flex; align-items: center; gap: 4px;"><div style="width: 8px;height: 8px;border-radius: 2px; background: #dc2626;"></div><span style="color: #71717a;">主色·强调</span></div>
+        <div style="display: flex; align-items: center; gap: 4px;"><div style="width: 8px;height: 8px;border-radius: 2px; background: #ca8a04;"></div><span style="color: #71717a;">金色·点缀</span></div>
+        <div style="display: flex; align-items: center; gap: 4px;"><div style="width: 8px;height: 8px;border-radius: 2px; background: #0ea5e9;"></div><span style="color: #71717a;">蓝光·数据</span></div>
+      </div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">钢铁侠 Iron Man</div>
+      <div class="palette-desc">金红装甲配色 · 暗色碳纤维底 · 电弧蓝光点缀。Mark 3 经典，科技感拉满</div>
+    </div>
+  </div>
+</div>
+
+<!-- Original 6 options below -->
+<h3 style="margin: 24px 0 12px; font-size: 15px; color: #a1a1aa;">其他方案（保留参考）</h3>
+<div class="palette-row">
+  <div class="palette-card" data-choice="color-emerald" onclick="toggleSelect(this)">
+    <div class="palette-preview" style="background: #0a0f0c;">
+      <div class="swatch-row">
+        <div class="swatch" style="background: #10b981;"></div>
+        <div class="swatch" style="background: #34d399;"></div>
+        <div class="swatch" style="background: #059669;"></div>
+        <div class="swatch" style="background: #064e3b;"></div>
+        <div class="swatch" style="background: #0a0f0c;"></div>
+      </div>
+      <div class="mini-ui" style="background: #0d1310; border: 1px solid rgba(16,185,129,0.08);">
+        <div class="mini-nav">
+          <div class="mini-nav-dot" style="background: #10b981;"></div>
+          <div class="mini-nav-item" style="background: rgba(255,255,255,0.06); width: 60px;"></div>
+          <div class="mini-nav-item" style="background: rgba(16,185,129,0.2); width: 30px; margin-left: auto;"></div>
+        </div>
+        <div class="mini-card" style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.08);">
+          <span class="mini-tag" style="background: rgba(16,185,129,0.12); color: #34d399;">L3 组件</span>
+          <div class="mini-line" style="background: rgba(255,255,255,0.1); width: 70%;"></div>
+          <div class="mini-line" style="background: rgba(255,255,255,0.06); width: 90%;"></div>
+          <div class="mini-circle-row">
+            <div class="mini-circle" style="width: 18px; height: 18px; background: #064e3b; border: 1px solid #10b981;">T</div>
+            <div class="mini-circle" style="width: 14px; height: 14px; background: #064e3b; border: 1px solid rgba(16,185,129,0.5);">A</div>
+            <div class="mini-circle" style="width: 12px; height: 12px; background: #064e3b; border: 1px solid rgba(16,185,129,0.3);">R</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Emerald 学术绿</div>
+      <div class="palette-desc">自然稳健，长时间阅读舒适</div>
+    </div>
+  </div>
+
+  <div class="palette-card" data-choice="color-amber" onclick="toggleSelect(this)">
+    <div class="palette-preview" style="background: #0f0d0a;">
+      <div class="swatch-row">
+        <div class="swatch" style="background: #f59e0b;"></div>
+        <div class="swatch" style="background: #fbbf24;"></div>
+        <div class="swatch" style="background: #d97706;"></div>
+        <div class="swatch" style="background: #78350f;"></div>
+        <div class="swatch" style="background: #0f0d0a;"></div>
+      </div>
+      <div class="mini-ui" style="background: #13100d; border: 1px solid rgba(245,158,11,0.08);">
+        <div class="mini-nav">
+          <div class="mini-nav-dot" style="background: #f59e0b;"></div>
+          <div class="mini-nav-item" style="background: rgba(255,255,255,0.06); width: 60px;"></div>
+          <div class="mini-nav-item" style="background: rgba(245,158,11,0.2); width: 30px; margin-left: auto;"></div>
+        </div>
+        <div class="mini-card" style="background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.08);">
+          <span class="mini-tag" style="background: rgba(245,158,11,0.12); color: #fbbf24;">L3 组件</span>
+          <div class="mini-line" style="background: rgba(255,255,255,0.1); width: 70%;"></div>
+          <div class="mini-line" style="background: rgba(255,255,255,0.06); width: 90%;"></div>
+          <div class="mini-circle-row">
+            <div class="mini-circle" style="width: 18px; height: 18px; background: #78350f; border: 1px solid #f59e0b;">T</div>
+            <div class="mini-circle" style="width: 14px; height: 14px; background: #78350f; border: 1px solid rgba(245,158,11,0.5);">A</div>
+            <div class="mini-circle" style="width: 12px; height: 12px; background: #78350f; border: 1px solid rgba(245,158,11,0.3);">R</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Amber 经典金</div>
+      <div class="palette-desc">温暖经典学术感</div>
+    </div>
+  </div>
+
+  <div class="palette-card" data-choice="color-cyan" onclick="toggleSelect(this)">
+    <div class="palette-preview" style="background: #0a0d0f;">
+      <div class="swatch-row">
+        <div class="swatch" style="background: #06b6d4;"></div>
+        <div class="swatch" style="background: #22d3ee;"></div>
+        <div class="swatch" style="background: #0891b2;"></div>
+        <div class="swatch" style="background: #164e63;"></div>
+        <div class="swatch" style="background: #0a0d0f;"></div>
+      </div>
+      <div class="mini-ui" style="background: #0d1113; border: 1px solid rgba(6,182,212,0.08);">
+        <div class="mini-nav">
+          <div class="mini-nav-dot" style="background: #06b6d4;"></div>
+          <div class="mini-nav-item" style="background: rgba(255,255,255,0.06); width: 60px;"></div>
+          <div class="mini-nav-item" style="background: rgba(6,182,212,0.2); width: 30px; margin-left: auto;"></div>
+        </div>
+        <div class="mini-card" style="background: rgba(6,182,212,0.05); border: 1px solid rgba(6,182,212,0.08);">
+          <span class="mini-tag" style="background: rgba(6,182,212,0.12); color: #22d3ee;">L3 组件</span>
+          <div class="mini-line" style="background: rgba(255,255,255,0.1); width: 70%;"></div>
+          <div class="mini-line" style="background: rgba(255,255,255,0.06); width: 90%;"></div>
+          <div class="mini-circle-row">
+            <div class="mini-circle" style="width: 18px; height: 18px; background: #164e63; border: 1px solid #06b6d4;">T</div>
+            <div class="mini-circle" style="width: 14px; height: 14px; background: #164e63; border: 1px solid rgba(6,182,212,0.5);">A</div>
+            <div class="mini-circle" style="width: 12px; height: 12px; background: #164e63; border: 1px solid rgba(6,182,212,0.3);">R</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Cyan 科技青</div>
+      <div class="palette-desc">冷静现代代码感</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 12px;">
+  <p style="font-size: 13px; color: #818cf8;">钢铁侠配色：主色 Crimson Red · 点缀 Gold · 数据高亮 Arc Blue · 底色炭黑</p>
+</div>

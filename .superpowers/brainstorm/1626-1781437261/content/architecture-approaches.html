@@ -1,0 +1,93 @@
+<h2>整体架构方案对比</h2>
+<p class="subtitle">现有项目是一个 D3.js 知识图谱，需要拆解为 Vue 组件化应用。以下是三种重构方向：</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>保留知识图谱 + 增强</h3>
+      <p>核心仍为可视化知识图谱，但用 Vue 组件化拆分。增加搜索、过滤、节点收藏、学习进度追踪等增强功能。适合保持原有交互体验的升级。</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>多视图知识学习平台</h3>
+      <p>图谱只是一个视图。增加：列表/卡片浏览、分类筛选、详情页（含代码示例）、学习路线图、面试题库、搜索等。更接近完整的知识学习 Web 应用。</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>极简文档型知识库</h3>
+      <p>放弃图谱，转为文档/百科风格。左侧目录树，右侧 Markdown 详情。类似 VuePress/Docusaurus 风格。更注重内容深度，而非可视化交互。</p>
+    </div>
+  </div>
+</div>
+
+<h2 style="margin-top: 48px;">UI 设计风格方向</h2>
+<p class="subtitle">无论选择哪种架构，都需要确定视觉风格</p>
+
+<div class="cards">
+  <div class="card" data-choice="design-dashboard" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #0f172a; padding: 24px; border-radius: 8px;">
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <div style="width:40px;height:8px;background:#3b82f6;border-radius:2px;"></div>
+          <div style="width:80px;height:8px;background:#1e293b;border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <div style="flex:1; height:60px; background: linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; border-radius:8px;"></div>
+          <div style="flex:1; height:60px; background: linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; border-radius:8px;"></div>
+        </div>
+        <div style="height:40px; background:#1e293b; margin-top:12px; border-radius:6px; border-left:3px solid #60a5fa;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>暗色仪表盘风格</h3>
+      <p>保持现有暗色主题，向 Dashboard 方向进化。科技感强，适合技术类内容的展示。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="design-minimal" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #fafafa; padding: 24px; border-radius: 8px; border:1px solid #e5e7eb;">
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <div style="width:40px;height:8px;background:#111827;border-radius:2px;"></div>
+          <div style="width:80px;height:8px;background:#e5e7eb;border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <div style="flex:1; height:60px; background: #fff; border:1px solid #e5e7eb; border-radius:8px;"></div>
+          <div style="flex:1; height:60px; background: #fff; border:1px solid #e5e7eb; border-radius:8px;"></div>
+        </div>
+        <div style="height:40px; background:#f9fafb; margin-top:12px; border-radius:6px; border-left:3px solid #111827;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>极简编辑风格</h3>
+      <p>浅色主题，大量留白，字体排版驱动。类似 Linear/Notion 风格，优雅克制。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="design-colorful" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #1a1a2e; padding: 24px; border-radius: 8px;">
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <div style="width:40px;height:8px;background:linear-gradient(90deg,#60a5fa,#a78bfa);border-radius:2px;"></div>
+          <div style="width:80px;height:8px;background:#16213e;border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <div style="flex:1; height:60px; background: linear-gradient(135deg, #16213e, #0f3460); border:1px solid #533483; border-radius:8px;"></div>
+          <div style="flex:1; height:60px; background: linear-gradient(135deg, #16213e, #0f3460); border:1px solid #e94560; border-radius:8px;"></div>
+        </div>
+        <div style="height:40px; background:linear-gradient(90deg,rgba(96,165,250,0.1),rgba(167,139,250,0.1)); margin-top:12px; border-radius:6px; border:1px solid rgba(167,139,250,0.2);"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>赛博科技风</h3>
+      <p>霓虹渐变、毛玻璃、发光边框。深色背景 + 彩色光效，面向开发者的炫酷风格。</p>
+    </div>
+  </div>
+</div>

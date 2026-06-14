@@ -1,0 +1,197 @@
+<style>
+  .arch-block { background: #121218; border: 1px solid rgba(129,140,248,0.1); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .arch-block h3 { font-size: 15px; color: #a5b4fc; margin: 0 0 6px 0; font-weight: 600; }
+  .arch-block p { font-size: 13px; color: #a1a1aa; margin: 0; line-height: 1.6; }
+  .code-snip { background: #0a0a10; border: 1px solid rgba(129,140,248,0.12); border-radius: 8px; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #a5b4fc; line-height: 1.7; margin: 8px 0; overflow-x: auto; }
+  .route-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  .route-table th { text-align: left; font-size: 11px; color: #71717a; padding: 8px 12px; border-bottom: 1px solid rgba(129,140,248,0.08); text-transform: uppercase; letter-spacing: 0.05em; }
+  .route-table td { font-size: 13px; color: #d4d4d8; padding: 10px 12px; border-bottom: 1px solid rgba(129,140,248,0.06); }
+  .route-table td:first-child { font-family: monospace; color: #a5b4fc; }
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .comp-card { background: #0a0a10; border: 1px solid rgba(129,140,248,0.08); border-radius: 8px; padding: 12px 14px; }
+  .comp-card .name { font-size: 13px; font-weight: 600; color: #e4e4e7; margin-bottom: 4px; }
+  .comp-card .desc { font-size: 11px; color: #71717a; line-height: 1.5; }
+  .flow-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+  .flow-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.3); display: flex; align-items: center; justify-content: center; font-size: 11px; color: #818cf8; flex-shrink: 0; font-weight: 600; }
+  .flow-text { font-size: 13px; color: #a1a1aa; line-height: 1.5; }
+  .flow-text strong { color: #d4d4d8; }
+</style>
+
+<h2>系统架构设计</h2>
+<p class="subtitle">Vue 3 + Vite + TypeScript + Pinia 技术栈，赛博学术风视觉</p>
+
+<div class="arch-block">
+  <h3>技术栈</h3>
+  <div class="code-snip">
+Vue 3 (Composition API) + TypeScript + Vite
+Pinia (状态管理)        Vue Router (路由)
+D3.js v7 (知识图谱)      Prism.js (代码高亮)
+Tailwind CSS v4 (样式)   Motion (微动效)
+  </div>
+  <p>不引入重型 UI 库，以 Tailwind + 自定义组件实现赛博学术风，保持轻量</p>
+</div>
+
+<div class="arch-block">
+  <h3>路由设计</h3>
+  <table class="route-table">
+    <tr><th>路由</th><th>视图</th><th>说明</th></tr>
+    <tr><td>/</td><td>GraphView</td><td>默认：交互式知识图谱（保留 D3 力导向图）</td></tr>
+    <tr><td>/list</td><td>ListView</td><td>卡片/列表浏览，支持分类过滤和搜索</td></tr>
+    <tr><td>/roadmap</td><td>RoadmapView</td><td>分阶段学习路线图，追踪学习进度</td></tr>
+    <tr><td>/interview</td><td>InterviewView</td><td>面试题库，按主题 / 难度分类</td></tr>
+    <tr><td>/detail/:id</td><td>DetailView</td><td>知识点详情页：完整解释 + 代码 + 公式 + 关联</td></tr>
+  </table>
+</div>
+
+<div class="arch-block">
+  <h3>组件树</h3>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="name">AppLayout</div>
+      <div class="desc">全局布局壳：导航栏 + 主内容区 + 底部状态栏。赛博学术风顶部导航</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">NavBar</div>
+      <div class="desc">靛蓝主题导航：Logo、路由标签、搜索入口、模式切换（引导/面试）</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">KnowledgeGraph</div>
+      <div class="desc">D3.js 力导向图核心组件。5层分层布局、拖拽、缩放、节点高亮</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">DetailPanel</div>
+      <div class="desc">侧边栏详情：定义、地位、前置、下一步、关联标签（图谱视图中）</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">DetailPage</div>
+      <div class="desc">独立详情页：完整 Markdown 内容、代码示例、公式、Mermaid 图表</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">ConceptCard</div>
+      <div class="desc">知识卡片组件：层级标签、分类色标、简述、展开按钮</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">ConceptList</div>
+      <div class="desc">列表视图：虚拟滚动、分层过滤、分类标签、搜索高亮</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">LearningRoadmap</div>
+      <div class="desc">5 层学习路线：进度条、已完成/进行中/未开始状态</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">InterviewPanel</div>
+      <div class="desc">面试模式：四阶段分类、题目卡片、答案展开、难度标签</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">CodeBlock</div>
+      <div class="desc">代码展示：Prism.js 语法高亮、复制按钮、语言标签</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">SearchBar</div>
+      <div class="desc">全局搜索：命令面板风格 (Ctrl+K)、模糊匹配、即时预览</div>
+    </div>
+    <div class="comp-card">
+      <div class="name">LevelFilter</div>
+      <div class="desc">层级筛选器：5 层切换、分类筛选 (LLM/Agent/基础)</div>
+    </div>
+  </div>
+</div>
+
+<div class="arch-block">
+  <h3>数据流</h3>
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div class="flow-text"><strong>knowledgeStore (Pinia)</strong> — 全局知识数据仓库。启动时加载完整的知识 JSON，包含 33+ 节点的完整信息：定义、公式、代码示例、面试题</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div class="flow-text"><strong>appStore (Pinia)</strong> — 应用状态：当前模式 (normal/guide/interview)、选中节点、学习进度 (localStorage 持久化)、搜索查询</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div class="flow-text"><strong>组件消费</strong> — GraphView 读取完整数据渲染图谱；ListView 读取过滤后数据；DetailPage 根据路由参数查找单条数据；RoadmapView 结合进度数据展示</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div class="flow-text"><strong>响应式联动</strong> — 点击图谱节点 → 更新选中状态 → DetailPanel 响应 → 同时更新 URL hash。路由切换 → 图谱定位到对应层级</div>
+  </div>
+</div>
+
+<div class="arch-block">
+  <h3>知识数据扩展计划</h3>
+  <p style="margin-bottom: 12px;">每个概念节点从现有的 4 个字段扩展到完整的学习资料：</p>
+  <table class="route-table">
+    <tr><th>字段</th><th>现有</th><th>扩展后</th></tr>
+    <tr><td>核心定义</td><td>简短描述</td><td>500-800 字深度解释，含类比、图示</td></tr>
+    <tr><td>公式 / 原理</td><td>无</td><td>关键数学公式 (LaTeX)、算法伪代码</td></tr>
+    <tr><td>代码示例</td><td>无</td><td>Python/JS 实战代码（LangChain、transformers 等）</td></tr>
+    <tr><td>架构图</td><td>无</td><td>Mermaid 流程图 / 时序图</td></tr>
+    <tr><td>面试题</td><td>仅面试模式标签</td><td>每个概念 2-4 道常见面试题 + 参考答案</td></tr>
+    <tr><td>最佳实践</td><td>无</td><td>生产环境经验、常见陷阱</td></tr>
+    <tr><td>延伸阅读</td><td>无</td><td>论文链接、官方文档、推荐博客</td></tr>
+    <tr><td>难度等级</td><td>无</td><td>入门 / 中级 / 高级，用于过滤和学习路线</td></tr>
+  </table>
+</div>
+
+<div class="arch-block">
+  <h3>项目文件结构</h3>
+  <div class="code-snip">
+aiWeb/
+  index.html
+  package.json
+  vite.config.ts
+  tsconfig.json
+  tailwind.config.ts
+  src/
+    main.ts                 # 入口：挂载 App、注册 Router/Pinia
+    App.vue                 # 根布局：NavBar + RouterView
+    router/
+      index.ts              # 路由配置 (5 条路由)
+    stores/
+      knowledgeStore.ts     # 知识数据仓库 (33+ 节点)
+      appStore.ts           # 应用状态 (模式、选中、进度)
+    data/
+      knowledge.ts          # 核心知识数据 (TypeScript 类型定义)
+      interview.ts          # 面试题库数据
+    views/
+      GraphView.vue         # 图谱主视图
+      ListView.vue          # 列表浏览视图
+      RoadmapView.vue       # 学习路线图
+      InterviewView.vue     # 面试题库
+      DetailView.vue        # 知识点详情页
+    components/
+      layout/
+        AppLayout.vue
+        NavBar.vue
+        SidePanel.vue
+      graph/
+        KnowledgeGraph.vue   # D3 图谱核心
+        GraphNode.vue
+        GraphControls.vue
+      common/
+        ConceptCard.vue
+        CodeBlock.vue
+        SearchBar.vue
+        LevelFilter.vue
+        MermaidChart.vue
+      detail/
+        ConceptDetail.vue
+        RelatedConcepts.vue
+        InterviewQA.vue
+      roadmap/
+        LevelStage.vue
+        ProgressBar.vue
+    utils/
+      d3-helper.ts          # D3 工具函数
+      search.ts             # 模糊搜索
+      progress.ts           # localStorage 进度管理
+    types/
+      index.ts              # TypeScript 类型定义
+  </div>
+</div>
+
+<div class="section" style="margin-top: 24px;">
+  <p style="font-size: 13px; color: #818cf8;">
+    以上是完整的技术架构设计。请确认是否满足预期，或者有需要调整的地方？
+  </p>
+</div>

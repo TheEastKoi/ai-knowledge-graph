@@ -1,0 +1,102 @@
+<style>
+  .preview-box { background: #0a1628; border-radius: 16px; padding: 32px; border: 1px solid rgba(14,165,233,0.15); max-width: 700px; margin: 0 auto; }
+  .preview-box h3 { color: #e2e8f0; font-size: 18px; margin: 0 0 20px 0; }
+  .swatches { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .sw { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; font-size: 9px; font-weight: 600; }
+  .mini-screen { background: #0f1e3a; border-radius: 12px; border: 1px solid rgba(14,165,233,0.1); padding: 20px; }
+  .ms-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .ms-logo { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #dc2626, #ca8a04); }
+  .ms-graph { display: flex; gap: 20px; }
+  .ms-left { flex: 1; background: #132444; border-radius: 10px; border: 1px solid rgba(14,165,233,0.1); padding: 16px; position: relative; }
+  .ms-right { width: 200px; background: #132444; border-radius: 10px; border: 1px solid rgba(14,165,233,0.1); padding: 16px; }
+  .ms-node-row { display: flex; gap: 30px; align-items: center; justify-content: space-around; margin: 12px 0; }
+  .ms-node { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+  .ms-tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 9px; margin: 2px; }
+  .role-label { font-size: 10px; margin-top: 20px; color: #94a3b8; }
+  .role-row { display: flex; gap: 12px; margin-top: 6px; }
+  .role-chip { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #cbd5e1; }
+  .role-dot { width: 8px; height: 8px; border-radius: 2px; }
+</style>
+
+<h2>钢铁侠 × 科技蓝 配色确认</h2>
+<p class="subtitle">深蓝底色 + 金红装甲 + 电弧蓝光</p>
+
+<div class="preview-box">
+  <div class="swatches">
+    <div class="sw" style="background: #0a1628; color: #64748b;">背景</div>
+    <div class="sw" style="background: #0f1e3a; color: #64748b;">表面</div>
+    <div class="sw" style="background: #132444; color: #64748b;">卡片</div>
+    <div class="sw" style="background: #dc2626; color: #fff;">装甲红</div>
+    <div class="sw" style="background: #ca8a04; color: #0a1628;">钛金</div>
+    <div class="sw" style="background: #0ea5e9; color: #0a1628;">电弧蓝</div>
+    <div class="sw" style="background: #10b981; color: #0a1628;">基础</div>
+    <div class="sw" style="background: #3b82f6; color: #fff;">LLM</div>
+  </div>
+
+  <div class="mini-screen">
+    <div class="ms-nav">
+      <div class="ms-logo"></div>
+      <span style="font-size: 13px; font-weight: 600; color: #e2e8f0;">AI Knowledge Graph</span>
+      <span style="font-size: 10px; color: #ca8a04; background: rgba(202,138,4,0.12); padding: 3px 8px; border-radius: 10px; margin-left: auto;">引导模式</span>
+    </div>
+    <div class="ms-graph">
+      <div class="ms-left">
+        <div style="display: flex; gap: 4px; margin-bottom: 12px;">
+          <span style="font-size: 9px; color: #64748b; background: rgba(14,165,233,0.06); padding: 2px 6px; border-radius: 4px;">L1</span>
+          <span style="font-size: 9px; color: #64748b; background: rgba(14,165,233,0.06); padding: 2px 6px; border-radius: 4px;">L2</span>
+          <span style="font-size: 9px; color: #64748b; background: rgba(14,165,233,0.06); padding: 2px 6px; border-radius: 4px;">L3</span>
+          <span style="font-size: 9px; color: #64748b; background: rgba(14,165,233,0.06); padding: 2px 6px; border-radius: 4px;">L4</span>
+          <span style="font-size: 9px; color: #64748b; background: rgba(14,165,233,0.06); padding: 2px 6px; border-radius: 4px;">L5</span>
+        </div>
+        <div class="ms-node-row">
+          <div class="ms-node" style="width: 36px; height: 36px; background: #065f46; border: 2px solid #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.3);">LLM</div>
+          <div class="ms-node" style="width: 28px; height: 28px; background: #1e3a5f; border: 1.5px solid #3b82f6; box-shadow: 0 0 6px rgba(59,130,246,0.3);">T</div>
+          <div class="ms-node" style="width: 24px; height: 24px; background: #1e3a5f; border: 1.5px solid rgba(202,138,4,0.6); box-shadow: 0 0 4px rgba(202,138,4,0.2);">A</div>
+          <div class="ms-node" style="width: 20px; height: 20px; background: #1e3a5f; border: 1.5px solid rgba(14,165,233,0.5); box-shadow: 0 0 4px rgba(14,165,233,0.3);">R</div>
+        </div>
+        <svg width="100%" height="30" style="margin-top: 4px;">
+          <line x1="45" y1="15" x2="110" y2="15" stroke="rgba(14,165,233,0.15)" stroke-width="1"/>
+          <line x1="110" y1="15" x2="175" y2="15" stroke="rgba(14,165,233,0.1)" stroke-width="1"/>
+          <line x1="175" y1="15" x2="240" y2="15" stroke="rgba(14,165,233,0.06)" stroke-width="1"/>
+        </svg>
+        <div style="position: absolute; bottom: 10px; right: 12px;">
+          <button style="background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); color: #0ea5e9; border-radius: 6px; padding: 4px 8px; font-size: 10px;">+</button>
+          <button style="background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); color: #0ea5e9; border-radius: 6px; padding: 4px 8px; font-size: 10px;">-</button>
+        </div>
+      </div>
+      <div class="ms-right">
+        <span class="ms-tag" style="background: rgba(14,165,233,0.12); color: #38bdf8;">第3层</span>
+        <span class="ms-tag" style="background: rgba(202,138,4,0.12); color: #eab308;">Agent</span>
+        <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; width: 80%; margin: 10px 0 6px;"></div>
+        <div style="height: 3px; background: rgba(255,255,255,0.04); border-radius: 2px; width: 95%; margin: 4px 0;"></div>
+        <div style="height: 3px; background: rgba(255,255,255,0.04); border-radius: 2px; width: 70%; margin: 4px 0 12px;"></div>
+        <div style="font-size: 9px; color: #64748b; margin-bottom: 4px;">前置知识</div>
+        <span class="ms-tag" style="background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.25); color: #f87171;">Agent 定义</span>
+        <span class="ms-tag" style="background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.25); color: #f87171;">思维链</span>
+        <div style="font-size: 9px; color: #64748b; margin: 10px 0 4px;">下一步</div>
+        <span class="ms-tag" style="background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.25); color: #38bdf8;">ReAct</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="role-label">色彩角色分配</div>
+  <div class="role-row">
+    <div class="role-chip"><div class="role-dot" style="background: #dc2626;"></div>装甲红：主强调、按钮、选中态、核心概念外圈</div>
+  </div>
+  <div class="role-row">
+    <div class="role-chip"><div class="role-dot" style="background: #ca8a04;"></div>钛金：Agent 分类、等级徽章、金色点缀</div>
+  </div>
+  <div class="role-row">
+    <div class="role-chip"><div class="role-dot" style="background: #0ea5e9;"></div>电弧蓝：连线光效、数据高亮、代码标签、图标</div>
+  </div>
+  <div class="role-row">
+    <div class="role-chip"><div class="role-dot" style="background: #10b981;"></div>基础绿：Foundation 分类、成功状态、完成标记</div>
+  </div>
+  <div class="role-row">
+    <div class="role-chip"><div class="role-dot" style="background: #3b82f6;"></div>LLM 蓝：LLM 分类、信息提示</div>
+  </div>
+</div>
+
+<p style="text-align: center; margin-top: 20px; font-size: 14px; color: #38bdf8;">
+  深蓝底 + 金红强调 + 电弧蓝光 — 钢铁侠 HUD 界面感
+</p>

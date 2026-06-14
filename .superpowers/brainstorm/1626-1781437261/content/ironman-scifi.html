@@ -1,0 +1,194 @@
+<style>
+  .theme-row { display: flex; gap: 14px; margin-bottom: 28px; }
+  .theme-card { flex: 1; border-radius: 14px; overflow: hidden; border: 2px solid transparent; cursor: default; transition: all 0.2s; }
+  .theme-card:hover { border-color: rgba(255,255,255,0.25); }
+  .theme-screen { padding: 22px; position: relative; overflow: hidden; }
+  .theme-screen::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px); pointer-events: none; }
+  .theme-label { padding: 12px 16px; background: rgba(0,0,0,0.3); }
+  .theme-name { font-size: 14px; font-weight: 600; color: #f1f5f9; margin-bottom: 3px; }
+  .theme-desc { font-size: 11px; color: #94a3b8; line-height: 1.4; }
+
+  .sw-row { display: flex; gap: 7px; margin-bottom: 18px; }
+  .sw { width: 30px; height: 30px; border-radius: 7px; }
+
+  .ui-panel { border-radius: 10px; padding: 14px; margin-bottom: 8px; position: relative; }
+  .ui-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .ui-logo { width: 22px; height: 22px; border-radius: 5px; }
+  .ui-pill { padding: 3px 10px; border-radius: 12px; font-size: 9px; font-weight: 500; }
+  .ui-tag { display: inline-block; padding: 3px 8px; border-radius: 10px; font-size: 9px; margin: 2px; }
+  .ui-line { height: 4px; border-radius: 2px; margin: 4px 0; }
+  .ui-node-row { display: flex; gap: 28px; align-items: center; justify-content: space-around; margin: 14px 0; }
+  .ui-node { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; color: #fff; }
+</style>
+
+<h2>钢铁侠 × 通透科幻风 — 三档亮度</h2>
+<p class="subtitle">亮一点 + 透一点 (毛玻璃) + 科幻 HUD 感 · 点击选择</p>
+
+<!-- Theme 1: Mid Blue + Glass -->
+<div class="theme-row">
+  <div class="theme-card" data-choice="theme-mid-glass" onclick="toggleSelect(this)">
+    <div class="theme-screen" style="background: #0b1a30;">
+      <div class="sw-row">
+        <div class="sw" style="background: #0b1a30; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);"></div>
+        <div class="sw" style="background: #dc2626;"></div>
+        <div class="sw" style="background: #eab308;"></div>
+        <div class="sw" style="background: #38bdf8;"></div>
+        <div class="sw" style="background: #22c55e;"></div>
+      </div>
+      <div class="ui-nav">
+        <div class="ui-logo" style="background: linear-gradient(135deg, #dc2626, #eab308);"></div>
+        <span style="font-size: 12px; font-weight: 600; color: #f1f5f9;">Knowledge Graph</span>
+        <span class="ui-pill" style="background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.25); margin-left: auto;">Guide</span>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <div style="flex: 1; background: rgba(15,40,70,0.6); backdrop-filter: blur(8px); border-radius: 10px; border: 1px solid rgba(56,189,248,0.12); padding: 14px;">
+          <div style="display: flex; gap: 4px; margin-bottom: 10px;">
+            <span style="font-size: 8px; color: #64748b; background: rgba(56,189,248,0.08); padding: 2px 6px; border-radius: 3px;">L1</span>
+            <span style="font-size: 8px; color: #64748b; background: rgba(56,189,248,0.08); padding: 2px 6px; border-radius: 3px;">L2</span>
+            <span style="font-size: 8px; color: #64748b; background: rgba(56,189,248,0.08); padding: 2px 6px; border-radius: 3px;">L3</span>
+            <span style="font-size: 8px; color: #64748b; background: rgba(56,189,248,0.08); padding: 2px 6px; border-radius: 3px;">L4</span>
+            <span style="font-size: 8px; color: #64748b; background: rgba(56,189,248,0.08); padding: 2px 6px; border-radius: 3px;">L5</span>
+          </div>
+          <div class="ui-node-row">
+            <div class="ui-node" style="width: 32px; height: 32px; background: rgba(16,185,129,0.2); border: 2px solid #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.3);">LLM</div>
+            <div class="ui-node" style="width: 24px; height: 24px; background: rgba(59,130,246,0.2); border: 1.5px solid #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.3);">T</div>
+            <div class="ui-node" style="width: 20px; height: 20px; background: rgba(234,179,8,0.2); border: 1.5px solid #eab308; box-shadow: 0 0 6px rgba(234,179,8,0.25);">A</div>
+            <div class="ui-node" style="width: 18px; height: 18px; background: rgba(56,189,248,0.2); border: 1.5px solid #38bdf8; box-shadow: 0 0 6px rgba(56,189,248,0.3);">R</div>
+          </div>
+          <svg width="100%" height="20"><line x1="30" y1="10" x2="100" y2="10" stroke="rgba(56,189,248,0.2)" stroke-width="1"/><line x1="100" y1="10" x2="165" y2="10" stroke="rgba(56,189,248,0.12)" stroke-width="1"/><line x1="165" y1="10" x2="230" y2="10" stroke="rgba(56,189,248,0.08)" stroke-width="1"/></svg>
+        </div>
+        <div style="width: 180px; background: rgba(15,40,70,0.5); backdrop-filter: blur(8px); border-radius: 10px; border: 1px solid rgba(56,189,248,0.1); padding: 12px;">
+          <span class="ui-tag" style="background: rgba(220,38,38,0.12); border: 1px solid rgba(220,38,38,0.2); color: #f87171;">L3 · 组件</span>
+          <div class="ui-line" style="background: rgba(255,255,255,0.08); width: 85%; margin-top: 10px;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.05); width: 95%;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.05); width: 65%; margin-bottom: 12px;"></div>
+          <span class="ui-tag" style="background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); color: #7dd3fc;">前置 · 思维链</span>
+        </div>
+      </div>
+    </div>
+    <div class="theme-label" style="background: rgba(11,26,48,0.95);">
+      <div class="theme-name">中蓝 · 毛玻璃</div>
+      <div class="theme-desc">半透面板 + 节点光晕。适中亮度，玻璃质感</div>
+    </div>
+  </div>
+
+  <!-- Theme 2: Brighter Blue + Holographic -->
+  <div class="theme-card" data-choice="theme-bright-holo" onclick="toggleSelect(this)">
+    <div class="theme-screen" style="background: #0f2748;">
+      <div class="sw-row">
+        <div class="sw" style="background: #0f2748; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);"></div>
+        <div class="sw" style="background: #ef4444;"></div>
+        <div class="sw" style="background: #eab308;"></div>
+        <div class="sw" style="background: #0ea5e9;"></div>
+        <div class="sw" style="background: #22c55e;"></div>
+      </div>
+      <div class="ui-nav">
+        <div class="ui-logo" style="background: linear-gradient(135deg, #ef4444, #eab308); box-shadow: 0 0 12px rgba(239,68,68,0.3);"></div>
+        <span style="font-size: 12px; font-weight: 600; color: #f8fafc;">Knowledge Graph</span>
+        <span class="ui-pill" style="background: rgba(14,165,233,0.2); color: #7dd3fc; border: 1px solid rgba(14,165,233,0.3); margin-left: auto;">Guide</span>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <div style="flex: 1; background: rgba(18,38,72,0.55); backdrop-filter: blur(12px); border-radius: 10px; border: 1px solid rgba(14,165,233,0.15); padding: 14px; position: relative;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(14,165,233,0.4), transparent);"></div>
+          <div style="display: flex; gap: 4px; margin-bottom: 10px;">
+            <span style="font-size: 8px; color: #94a3b8; background: rgba(14,165,233,0.12); padding: 2px 6px; border-radius: 3px;">L1</span>
+            <span style="font-size: 8px; color: #94a3b8; background: rgba(14,165,233,0.12); padding: 2px 6px; border-radius: 3px;">L2</span>
+            <span style="font-size: 8px; color: #94a3b8; background: rgba(14,165,233,0.12); padding: 2px 6px; border-radius: 3px;">L3</span>
+            <span style="font-size: 8px; color: #94a3b8; background: rgba(14,165,233,0.12); padding: 2px 6px; border-radius: 3px;">L4</span>
+            <span style="font-size: 8px; color: #94a3b8; background: rgba(14,165,233,0.12); padding: 2px 6px; border-radius: 3px;">L5</span>
+          </div>
+          <div class="ui-node-row">
+            <div class="ui-node" style="width: 32px; height: 32px; background: rgba(34,197,94,0.25); border: 2px solid #22c55e; box-shadow: 0 0 14px rgba(34,197,94,0.4);">LLM</div>
+            <div class="ui-node" style="width: 24px; height: 24px; background: rgba(59,130,246,0.25); border: 1.5px solid #60a5fa; box-shadow: 0 0 10px rgba(59,130,246,0.4);">T</div>
+            <div class="ui-node" style="width: 20px; height: 20px; background: rgba(234,179,8,0.25); border: 1.5px solid #eab308; box-shadow: 0 0 8px rgba(234,179,8,0.3);">A</div>
+            <div class="ui-node" style="width: 18px; height: 18px; background: rgba(14,165,233,0.25); border: 1.5px solid #0ea5e9; box-shadow: 0 0 8px rgba(14,165,233,0.35);">R</div>
+          </div>
+          <svg width="100%" height="20"><line x1="30" y1="10" x2="100" y2="10" stroke="rgba(14,165,233,0.25)" stroke-width="1"/><line x1="100" y1="10" x2="165" y2="10" stroke="rgba(14,165,233,0.15)" stroke-width="1"/><line x1="165" y1="10" x2="230" y2="10" stroke="rgba(14,165,233,0.1)" stroke-width="1"/></svg>
+        </div>
+        <div style="width: 180px; background: rgba(18,38,72,0.45); backdrop-filter: blur(12px); border-radius: 10px; border: 1px solid rgba(14,165,233,0.15); padding: 12px; position: relative;">
+          <div style="position: absolute; top: 0; left: 10px; right: 10px; height: 1px; background: linear-gradient(90deg, transparent, rgba(14,165,233,0.3), transparent);"></div>
+          <span class="ui-tag" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.25); color: #f87171; margin-top: 4px;">L3 · Agent 组件</span>
+          <div class="ui-line" style="background: rgba(255,255,255,0.1); width: 85%; margin-top: 10px;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.06); width: 95%;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.06); width: 65%; margin-bottom: 12px;"></div>
+          <span class="ui-tag" style="background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.25); color: #7dd3fc;">前置 · 思维链</span>
+        </div>
+      </div>
+    </div>
+    <div class="theme-label" style="background: rgba(15,39,72,0.95);">
+      <div class="theme-name">亮蓝 · 全息风</div>
+      <div class="theme-desc">更亮底色 + 强光晕 + 顶部渐变光线。全息投影科幻感</div>
+    </div>
+  </div>
+</div>
+
+<!-- Theme 3: Bright with subtle grid -->
+<div class="theme-row">
+  <div class="theme-card" data-choice="theme-grid-scifi" onclick="toggleSelect(this)">
+    <div class="theme-screen" style="background: #0e2340;">
+      <div class="sw-row">
+        <div class="sw" style="background: #0e2340; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);"></div>
+        <div class="sw" style="background: #ef4444;"></div>
+        <div class="sw" style="background: #eab308;"></div>
+        <div class="sw" style="background: #22d3ee;"></div>
+        <div class="sw" style="background: #10b981;"></div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <div style="font-size: 8px; color: #22d3ee; text-transform: uppercase; letter-spacing: 0.2em;">SYS.INIT // NODE_MAP_ACTIVE</div>
+        <div style="font-size: 8px; color: #64748b; margin-left: auto;">v2.4.1</div>
+      </div>
+      <div class="ui-nav" style="background: rgba(15,40,75,0.4); backdrop-filter: blur(16px); border-radius: 8px; padding: 8px 12px; border: 1px solid rgba(34,211,238,0.1);">
+        <div class="ui-logo" style="background: linear-gradient(135deg, #ef4444, #eab308); box-shadow: 0 0 12px rgba(239,68,68,0.35);"></div>
+        <span style="font-size: 12px; font-weight: 600; color: #f8fafc;">AI Knowledge Graph</span>
+        <span style="font-size: 10px; color: #64748b; margin-left: 12px;">|</span>
+        <span style="font-size: 10px; color: #94a3b8;">Graph</span>
+        <span style="font-size: 10px; color: #64748b;">List</span>
+        <span style="font-size: 10px; color: #64748b;">Roadmap</span>
+        <span class="ui-pill" style="background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); margin-left: auto;">Interview</span>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 12px;">
+        <div style="flex: 1; background: rgba(16,40,72,0.5); backdrop-filter: blur(10px); border-radius: 10px; border: 1px solid rgba(34,211,238,0.12); padding: 14px; position: relative;">
+          <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(34,211,238,0.03) 1px, transparent 1px); background-size: 20px 20px; border-radius: 10px; pointer-events: none;"></div>
+          <div style="position: relative;">
+            <div style="display: flex; gap: 4px; margin-bottom: 10px;">
+              <span style="font-size: 8px; color: #22d3ee; background: rgba(34,211,238,0.1); padding: 2px 6px; border-radius: 3px;">L1</span>
+              <span style="font-size: 8px; color: #94a3b8; background: rgba(34,211,238,0.08); padding: 2px 6px; border-radius: 3px;">L2</span>
+              <span style="font-size: 8px; color: #94a3b8; background: rgba(34,211,238,0.08); padding: 2px 6px; border-radius: 3px;">L3</span>
+              <span style="font-size: 8px; color: #94a3b8; background: rgba(34,211,238,0.08); padding: 2px 6px; border-radius: 3px;">L4</span>
+              <span style="font-size: 8px; color: #94a3b8; background: rgba(34,211,238,0.08); padding: 2px 6px; border-radius: 3px;">L5</span>
+            </div>
+            <div class="ui-node-row">
+              <div class="ui-node" style="width: 34px; height: 34px; background: rgba(16,185,129,0.25); border: 2px solid #10b981; box-shadow: 0 0 16px rgba(16,185,129,0.35), inset 0 0 8px rgba(16,185,129,0.1);">LLM</div>
+              <div class="ui-node" style="width: 26px; height: 26px; background: rgba(59,130,246,0.25); border: 2px solid #60a5fa; box-shadow: 0 0 12px rgba(59,130,246,0.35), inset 0 0 6px rgba(59,130,246,0.1);">T</div>
+              <div class="ui-node" style="width: 22px; height: 22px; background: rgba(234,179,8,0.25); border: 2px solid #facc15; box-shadow: 0 0 10px rgba(234,179,8,0.3);">A</div>
+              <div class="ui-node" style="width: 20px; height: 20px; background: rgba(34,211,238,0.25); border: 2px solid #22d3ee; box-shadow: 0 0 10px rgba(34,211,238,0.35), inset 0 0 4px rgba(34,211,238,0.1);">R</div>
+            </div>
+            <svg width="100%" height="20"><line x1="30" y1="10" x2="100" y2="10" stroke="rgba(34,211,238,0.22)" stroke-width="1.2"/><line x1="100" y1="10" x2="170" y2="10" stroke="rgba(34,211,238,0.14)" stroke-width="1"/><line x1="170" y1="10" x2="240" y2="10" stroke="rgba(34,211,238,0.08)" stroke-width="1"/></svg>
+          </div>
+        </div>
+        <div style="width: 185px; background: rgba(16,40,72,0.45); backdrop-filter: blur(10px); border-radius: 10px; border: 1px solid rgba(34,211,238,0.12); padding: 14px;">
+          <span class="ui-tag" style="background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.2); color: #67e8f9;">第3层 · 关键组件</span>
+          <div class="ui-line" style="background: rgba(255,255,255,0.1); width: 85%; margin-top: 12px;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.06); width: 95%;"></div>
+          <div class="ui-line" style="background: rgba(255,255,255,0.06); width: 65%; margin-bottom: 14px;"></div>
+          <div style="font-size: 9px; color: #64748b; margin-bottom: 4px;">PREV</div>
+          <span class="ui-tag" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5;">Agent</span>
+          <span class="ui-tag" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5;">CoT</span>
+          <div style="font-size: 9px; color: #64748b; margin: 10px 0 4px;">NEXT</div>
+          <span class="ui-tag" style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #34d399;">→ ReAct</span>
+        </div>
+      </div>
+    </div>
+    <div class="theme-label" style="background: rgba(14,35,64,0.95);">
+      <div class="theme-name">亮蓝 · 网格科幻</div>
+      <div class="theme-desc">亮底 + 网格线 + 终端字体 + 强光晕。最科幻 HUD / 星际迷航 LCARS 感</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="text-align: center; margin-top: 12px;">
+  <p style="font-size: 13px; color: #94a3b8;">
+    三档亮度递进：中蓝毛玻璃 → 亮蓝全息 → 亮蓝网格科幻<br>
+    都保留钢铁侠金红强调色
+  </p>
+</div>
