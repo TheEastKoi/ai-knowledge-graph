@@ -104,6 +104,35 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "transformer-self-attention",
+        title: "自注意力机制 — Transformer 的核心",
+        formula: "\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V",
+        purpose: "这是 Transformer 架构最核心的公式。它让模型在处理每个词时，自动找出句子中哪些词与它最相关，然后加权融合这些词的信息。简单说：每个词「看」一眼整个句子，决定要关注谁、关注多少，最后综合出一个理解。",
+        variables: [
+          { symbol: "Q", name: "查询矩阵 (Query)", meaning: "当前词想要「查询」什么信息，相当于你在搜索引擎里输入的关键词" },
+          { symbol: "K", name: "键矩阵 (Key)", meaning: "句子中每个词可以被「匹配」的特征，相当于每篇文章的标签" },
+          { symbol: "V", name: "值矩阵 (Value)", meaning: "句子中每个词实际携带的信息内容，相当于匹配到文章后你要读的正文" },
+          { symbol: "d_k", name: "键向量的维度", meaning: "K 的向量长度，通常为 64。除以 √d_k 是为了防止点积值过大导致 softmax 梯度消失" },
+          { symbol: "QK^T", name: "注意力分数矩阵", meaning: "计算 Query 和每个 Key 的相似度，值越大表示越相关" },
+          { symbol: "softmax", name: "Softmax 归一化", meaning: "将所有分数转换为 0~1 之间的概率分布，让注意力权重加起来等于 1" },
+        ]
+      },
+      {
+        id: "transformer-multihead",
+        title: "多头注意力 — 从多个角度看问题",
+        formula: "\\text{MultiHead}(Q,K,V) = \\text{Concat}(\\text{head}_1,\\ldots,\\text{head}_h)W^O \\\\ \\text{where head}_i = \\text{Attention}(QW_i^Q, KW_i^K, VW_i^V)",
+        purpose: "单头注意力只能从一个角度理解句子关系。多头注意力并行运行多个「注意力头」，每个头关注不同的语义关系（比如一个头关注语法、一个头关注指代、一个头关注情感），最后拼接起来。这就是为什么 Transformer 理解力这么强。",
+        variables: [
+          { symbol: "h", name: "注意力头数量", meaning: "并行运行的独立注意力计算的数量，GPT-3 用了 96 个头，每个头关注不同的语义维度" },
+          { symbol: "W^Q_i, W^K_i, W^V_i", name: "各头的投影矩阵", meaning: "将原始 Q/K/V 投影到不同的子空间，让每个头学到不同的「关注模式」" },
+          { symbol: "W^O", name: "输出投影矩阵", meaning: "将所有头的结果拼接后投影回原始维度" },
+          { symbol: "Concat", name: "拼接操作", meaning: "将 h 个头各自算出的结果在最后一个维度拼成一个大矩阵" },
+          { symbol: "head_i", name: "第 i 个注意力头", meaning: "第 i 个头独立计算出的注意力输出" },
+        ]
+      }
+    ],
     references: [
       { title: "Attention Is All You Need (Transformer原始论文)", url: "https://arxiv.org/abs/1706.03762", type: "paper" },
       { title: "The Annotated Transformer (Harvard NLP)", url: "https://nlp.seas.harvard.edu/2018/04/03/attention.html", type: "blog" },
@@ -125,6 +154,35 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "attention-scaled-dot",
+        title: "缩放点积注意力 — 为什么要除以 √d_k",
+        formula: "\\text{Attention}(Q,K,V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V",
+        purpose: "当 d_k 很大时（比如 64 或 128），Q 和 K 的点积值会变得非常大。大值经过 softmax 后会产生极端分布（某个值接近 1，其余接近 0），导致梯度几乎为零，模型无法学习。除以 √d_k 将方差控制为 1，让 softmax 输出更平滑，训练更稳定。这就是「缩放」的含义。",
+        variables: [
+          { symbol: "Q", name: "查询 (Query)", meaning: "当前词想要关注什么的「提问」，由当前词的输入向量与 W_Q 矩阵相乘得到" },
+          { symbol: "K", name: "键 (Key)", meaning: "所有词可以用来被匹配的「标签」，由每个词的输入向量与 W_K 矩阵相乘得到" },
+          { symbol: "V", name: "值 (Value)", meaning: "所有词实际携带的「信息内容」，由每个词的输入向量与 W_V 矩阵相乘得到" },
+          { symbol: "d_k", name: "键向量维度", meaning: "单个注意力头的向量长度，常见值为 64。d_model / h = 512 / 8 = 64" },
+          { symbol: "√d_k", name: "缩放因子", meaning: "将点积的方差从 d_k 归一化到 1，防止大值使 softmax 饱和" },
+          { symbol: "softmax", name: "归一化指数函数", meaning: "在最后一个维度上，把分数转成概率分布。温度越高（分母越大）分布越均匀，温度越低越集中" },
+        ]
+      },
+      {
+        id: "attention-flash",
+        title: "FlashAttention — IO 感知的快速注意力",
+        formula: "\\text{FlashAttention: 分块计算 + 在线 Softmax + 重计算}",
+        purpose: "标准自注意力的显存占用是 O(n²)，长序列时直接爆显存。FlashAttention 将注意力矩阵分成小块，利用 GPU 的 SRAM 逐块计算，避免读写整个注意力矩阵到 HBM。结果：速度提升 2-4 倍，显存降低到 O(n)，几乎无损。2023 年的 FlashAttention-2 和 2024 年的 FlashAttention-3 进一步优化了并行性和 warp 级调度。",
+        variables: [
+          { symbol: "n", name: "序列长度", meaning: "输入文本的 token 数量。n=2048 时，标准注意力矩阵大小是 2048×2048 = 4M 个元素" },
+          { symbol: "O(n²)", name: "显存复杂度", meaning: "标准注意力的显存随序列长度平方增长。n 翻倍，显存翻 4 倍" },
+          { symbol: "HBM", name: "高带宽内存", meaning: "GPU 的主显存，容量大（80GB H100）但速度慢（1.5TB/s）" },
+          { symbol: "SRAM", name: "静态随机存取内存", meaning: "GPU 计算单元内的快速缓存，容量小（~20MB）但速度快（19TB/s），FlashAttention 在此计算" },
+          { symbol: "分块", name: "Tiling 策略", meaning: "将大矩阵切成能在 SRAM 中放下的小块，逐块计算 softmax 再拼回去" },
+        ]
+      }
+    ],
     references: [
       { title: "FlashAttention: Fast and Memory-Efficient Exact Attention", url: "https://arxiv.org/abs/2205.14135", type: "paper" },
       { title: "The Illustrated Transformer (Jay Alammar)", url: "https://jalammar.github.io/illustrated-transformer/", type: "blog" },
@@ -190,6 +248,36 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "rlhf-bradley-terry",
+        title: "Bradley-Terry 偏好模型 — 人类偏好怎么量化",
+        formula: "P(y_w \\succ y_l | x) = \\frac{\\exp(r(x, y_w))}{\\exp(r(x, y_w)) + \\exp(r(x, y_l))}",
+        purpose: "RLHF 的第一步是训练一个奖励模型 r(x,y)，它能给「好回答」打高分、给「差回答」打低分。Bradley-Terry 模型将人类偏好建模为：给定问题 x，人类选择好回答 y_w 而非差回答 y_l 的概率 = 好回答得分 / (好回答得分 + 差回答得分)。训练奖励模型时，最大化这个概率就等价于让模型学会分辨什么是好回答。",
+        variables: [
+          { symbol: "x", name: "输入提示", meaning: "用户提出的问题或指令" },
+          { symbol: "y_w", name: "获胜回答", meaning: "人类标注者偏好的回答（winning response）" },
+          { symbol: "y_l", name: "失败回答", meaning: "人类标注者不喜欢的回答（losing response）" },
+          { symbol: "r(x, y)", name: "奖励函数", meaning: "给定 (问题, 回答) 对，输出一个标量分数。这个函数就是一个精调后的大模型" },
+          { symbol: "≻", name: "偏好关系", meaning: "y_w ≻ y_l 表示「y_w 比 y_l 更好」" },
+          { symbol: "exp", name: "指数函数", meaning: "将分数映射为正数，确保概率在 0~1 之间" },
+        ]
+      },
+      {
+        id: "rlhf-ppo",
+        title: "PPO 强化学习目标 — 训练模型对齐人类偏好",
+        formula: "\\max_\\theta \\mathbb{E}_{x \\sim D, y \\sim \\pi_\\theta(y|x)}[r(x,y)] - \\beta \\cdot \\text{KL}(\\pi_\\theta \\parallel \\pi_{\\text{ref}})",
+        purpose: "有了奖励模型后，用 PPO 强化学习来微调大模型。最大化两个目标：1) 让模型生成能获高奖励的回答，2) 用 KL 散度惩罚不要偏离原始模型太远（防止模型学会钻奖励模型的空子，生成奇怪但得分高的文字）。β 是平衡系数，通常设得很小（0.01-0.1）。",
+        variables: [
+          { symbol: "π_θ", name: "当前策略模型", meaning: "正在被 RL 优化的语言模型，θ 是模型参数" },
+          { symbol: "π_ref", name: "参考策略模型", meaning: "SFT 后的冻结模型。PPO 不让 π_θ 偏离 π_ref 太远" },
+          { symbol: "r(x,y)", name: "奖励模型打分", meaning: "训练好的奖励模型对 (问题, 回答) 给出的评分" },
+          { symbol: "β", name: "KL 惩罚系数", meaning: "控制「要高分」和「别离谱」之间的平衡。β 太小 → 模型胡言乱语骗高分；β 太大 → 模型不敢优化" },
+          { symbol: "KL(·∥·)", name: "KL 散度", meaning: "衡量两个概率分布的差异。KL 越大 → π_θ 和 π_ref 输出越不同 → 惩罚越大" },
+          { symbol: "𝔼", name: "期望值", meaning: "对所有采样的 (问题, 回答) 对求平均" },
+        ]
+      }
+    ],
     references: [
       { title: 'InstructGPT (RLHF原始论文, OpenAI)', url: 'https://arxiv.org/abs/2203.02155', type: 'paper' },
       { title: 'Distortion of AI Alignment (ICML 2025)', url: 'https://arxiv.org/abs/2505.23749', type: 'paper' },
@@ -478,6 +566,20 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "embedding-cosine",
+        title: "余弦相似度 — 衡量两个向量的语义距离",
+        formula: "\\text{sim}(A,B) = \\frac{A \\cdot B}{\\|A\\| \\|B\\|} = \\frac{\\sum_{i=1}^{n} A_i B_i}{\\sqrt{\\sum_{i=1}^{n} A_i^2} \\sqrt{\\sum_{i=1}^{n} B_i^2}}",
+        purpose: "文本转为向量后，怎么判断两个文本语义相近？用余弦相似度。值在 [-1, 1] 之间，1 = 完全同义，0 = 无关，-1 = 完全相反。因为向量可能长度不同但方向相同（一篇长文和一句短摘要也可以语义相同），所以只看方向不看长度。这是 RAG 检索的核心指标 — 找与用户问题余弦相似度最高的文档片段。",
+        variables: [
+          { symbol: "A, B", name: "两个嵌入向量", meaning: "分别代表两段文本的语义向量，维度通常在 768~3072 之间" },
+          { symbol: "A·B", name: "向量点积", meaning: "A₁B₁ + A₂B₂ + ... + AₙBₙ。两个向量在方向上越一致，点积越大" },
+          { symbol: "‖A‖", name: "A 的 L2 范数", meaning: "向量 A 的长度，√(A₁² + A₂² + ... + Aₙ²)。余弦相似度除以它来归一化" },
+          { symbol: "n", name: "向量维度", meaning: "text-embedding-3-small 是 1536 维，text-embedding-3-large 是 3072 维" },
+        ]
+      }
+    ],
     references: [
       { title: 'MTEB Embedding模型排行榜', url: 'https://huggingface.co/spaces/mteb/leaderboard', type: 'docs' },
       { title: 'BGE-M3: 多语言多功能Embedding模型', url: 'https://arxiv.org/abs/2402.03216', type: 'paper' },
@@ -499,6 +601,23 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "lora-decomposition",
+        title: "LoRA 低秩分解 — 用 0.1% 的参数微调大模型",
+        formula: "h = W_0 x + \\underbrace{BA x}_{\\Delta W} \\quad \\text{where } B \\in \\mathbb{R}^{d \\times r}, A \\in \\mathbb{R}^{r \\times k}, r \\ll \\min(d,k)",
+        purpose: "大模型全量微调太贵（GPT-3 175B 需要 ~700GB 显存）。LoRA 发现微调时的参数更新量 ΔW 是低秩的，可以用两个小矩阵的乘积 BA 来近似。冻结原模型参数 W₀，只训练 A 和 B 两个小矩阵。A 随机初始化，B 零初始化。秩 r 通常取 8~64。训练完后可以合并回 W₀，推理速度不变。",
+        variables: [
+          { symbol: "W_0", name: "原始权重矩阵", meaning: "预训练模型的冻结参数，形状 d×k" },
+          { symbol: "x", name: "输入向量", meaning: "当前层的输入" },
+          { symbol: "h", name: "输出向量", meaning: "当前层的前向计算结果。h = 原始输出 + LoRA 增量" },
+          { symbol: "A", name: "低秩矩阵 A", meaning: "形状 r×k 的可训练矩阵，将输入从 k 维压缩到 r 维（降维）" },
+          { symbol: "B", name: "低秩矩阵 B", meaning: "形状 d×r 的可训练矩阵，将 r 维还原到 d 维（升维）" },
+          { symbol: "r", name: "秩", meaning: "低秩分解的中间维度。r 越小 → 参数越少但表达能力越弱。常用 r=8 或 r=16" },
+          { symbol: "ΔW", name: "权重增量", meaning: "微调带来的参数变化。LoRA 用 BA 近似这个增量" },
+        ]
+      }
+    ],
     references: [
       { title: 'LoRA原始论文 (Hu et al., 2021)', url: 'https://arxiv.org/abs/2106.09685', type: 'paper' },
       { title: 'QLoRA: 高效量化微调 (Dettmers, 2023)', url: 'https://arxiv.org/abs/2305.14314', type: 'paper' },
@@ -520,6 +639,23 @@ export const knowledgeNodes: ConceptNode[] = [
     interviewQuestions: [],
     bestPractices: [],
     commonPitfalls: [],
+    formulaAnnotations: [
+      {
+        id: "dpo-loss",
+        title: "DPO 损失函数 — 不用奖励模型的 RLHF",
+        formula: "\\mathcal{L}_{\\text{DPO}}(\\pi_\\theta; \\pi_{\\text{ref}}) = -\\mathbb{E}_{(x,y_w,y_l)\\sim D}\\left[\\log\\sigma\\left(\\beta\\log\\frac{\\pi_\\theta(y_w|x)}{\\pi_{\\text{ref}}(y_w|x)} - \\beta\\log\\frac{\\pi_\\theta(y_l|x)}{\\pi_{\\text{ref}}(y_l|x)}\\right)\\right]",
+        purpose: "DPO 的核心思想是绕开训练单独的奖励模型，直接让大模型从人类偏好数据中学习。公式的含义：对于每对 (好回答, 差回答)，增加好回答的相对概率、降低差回答的相对概率。好回答的 log 概率比差回答高越多 → 损失越小。β 控制模型更新幅度。这就是为什么 DPO 比 RLHF 简单一个数量级。",
+        variables: [
+          { symbol: "π_θ", name: "当前模型", meaning: "正在训练的语言模型" },
+          { symbol: "π_ref", name: "参考模型", meaning: "SFT 后的冻结模型，作为对比基准" },
+          { symbol: "y_w", name: "偏好回答", meaning: "人类标注者选择的更好回答" },
+          { symbol: "y_l", name: "非偏好回答", meaning: "人类标注者认为较差的回答" },
+          { symbol: "β", name: "温度参数", meaning: "控制模型偏离原始策略的程度。β 大 → 保守更新；β 小 → 激进更新。典型值 0.1" },
+          { symbol: "σ", name: "Sigmoid 函数", meaning: "将任意实数映射到 (0,1) 区间。σ(z) = 1/(1+e^{-z})" },
+          { symbol: "log(π/π_ref)", name: "对数概率比", meaning: "当前模型相对于参考模型，对某个回答的偏好变化" },
+        ]
+      }
+    ],
     references: [
       { title: 'DPO 原始论文 (Rafailov et al., 2023)', url: 'https://arxiv.org/abs/2305.18290', type: 'paper' },
       { title: 'DPO vs RLHF 对比分析 (HuggingFace)', url: 'https://huggingface.co/blog/ariG23498/rlhf-to-dpo', type: 'blog' },

@@ -36,6 +36,12 @@
         <pre class="text-[13px] leading-relaxed font-mono p-4 rounded-xl border" style="color: var(--color-text-muted); background: rgba(9, 20, 40, 0.8); border-color: var(--color-border-subtle);">{{ node.pseudocode }}</pre>
       </section>
 
+      <section v-if="node.formulaAnnotations && node.formulaAnnotations.length > 0" class="mb-8">
+        <h2 class="text-[15px] font-semibold mb-3" style="color: var(--color-text-primary);">公式详解</h2>
+        <p class="text-[13px] mb-4" style="color: var(--color-text-dim);">点击公式卡片展开查看每个符号的含义</p>
+        <FormulaCard v-for="fa in node.formulaAnnotations" :key="fa.id" :annotation="fa" />
+      </section>
+
       <section v-if="node.codeExamples.length > 0" class="mb-8">
         <h2 class="text-[15px] font-semibold mb-3" style="color: var(--color-text-primary);">Code Examples</h2>
         <CodeBlock v-for="(ex, idx) in node.codeExamples" :key="idx" :code="ex.code" :language="ex.language" :title="ex.title" />
@@ -85,6 +91,7 @@ import { marked } from 'marked'
 import katex from 'katex'
 import { useKnowledgeStore } from '@/stores/knowledgeStore'
 import CodeBlock from '@/components/common/CodeBlock.vue'
+import FormulaCard from '@/components/common/FormulaCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import type { Category } from '@/types'
 
