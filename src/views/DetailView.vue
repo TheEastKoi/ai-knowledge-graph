@@ -95,7 +95,7 @@ import FormulaCard from '@/components/common/FormulaCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import type { Category, FormulaAnnotation } from '@/types'
 
-// Configure marked
+// Configure marked — preserve raw HTML output from KaTeX
 marked.setOptions({
   breaks: true,
   gfm: true,
@@ -106,70 +106,94 @@ function escHtml(s: string): string {
   return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 }
 
-// Render a single formula with optional annotation
-function renderFormulaBlock(formula: string, annotations: FormulaAnnotation[]): string {
-  const trimmed = formula.trim()
-  // Try to find matching annotation by comparing formula text
-  const match = annotations.find(a => {
-    // Normalize both for comparison: remove whitespace
-    const n1 = a.formula.replace(/\s+/g, '')
-    const n2 = trimmed.replace(/\s+/g, '')
-    return n1 === n2 || n1.includes(n2) || n2.includes(n1.slice(0, 30))
-  })
-
-  let katexHtml = ''
-  try {
-    katexHtml = katex.renderToString(trimmed, { displayMode: true, throwOnError: false })
-  } catch {
-    katexHtml = `<pre>${trimmed}</pre>`
-  }
-
-  if (match) {
-    // Build variable table rows
-    const varRows = match.variables.map(v =>
-      `<tr><td class="fvs">${escHtml(v.symbol)}</td><td class="fvn">${escHtml(v.name)}</td><td class="fvm">${escHtml(v.meaning)}</td></tr>`
-    ).join('')
-
-    return `
-    <div class="inline-formula" onclick="this.classList.toggle('expanded')">
-      <div class="if-display">${katexHtml}</div>
-      <div class="if-toggle"><span>▸ 这个公式在做什么？</span></div>
-      <div class="if-detail">
-        <div class="if-purpose">${escHtml(match.purpose)}</div>
-        <div class="if-table-wrap"><table class="if-table">
-          <thead><tr><th>符号</th><th>名称</th><th>含义</th></tr></thead>
-          <tbody>${varRows}</tbody>
-        </table></div>
-      </div>
-    </div>`
-  }
-
-  // No matching annotation - still add basic toggle
-  return `
-  <div class="inline-formula no-annot" onclick="this.classList.toggle('expanded')">
-    <div class="if-display">${katexHtml}</div>
-    <div class="if-toggle"><span>▸ 这是什么？</span></div>
-    <div class="if-detail">
-      <div class="if-purpose">该公式暂无详细注释。原始 LaTeX：<code>${escHtml(trimmed)}</code></div>
-    </div>
-  </div>`
-}
-
+// Render LaTeX formulas in text with interactive annotations
 function renderLatex(text: string, annotations: FormulaAnnotation[]): string {
   if (!text) return ''
+
+  // Build a lookup: normalized formula signature → annotation
+  const annotationMap = new Map<string, FormulaAnnotation>()
+  for (const a of annotations) {
+    // Signature: first 40 chars of normalized formula (no whitespace, no newlines)
+    const sig = a.formula.replace(/[\s\n]+/g, '').slice(0, 40)
+    annotationMap.set(sig, a)
+  }
+
+  function findAnnotation(formula: string): FormulaAnnotation | undefined {
+    const normalized = formula.replace(/[\s\n]+/g, '')
+    // Exact match first
+    for (const [sig, ann] of annotationMap) {
+      if (normalized === sig || normalized.startsWith(sig) || sig.startsWith(normalized)) {
+        return ann
+      }
+    }
+    // Substring match
+    for (const [sig, ann] of annotationMap) {
+      if (normalized.includes(sig) || sig.includes(normalized.slice(0, 40))) {
+        return ann
+      }
+    }
+    // Length-normalized match (compare first N chars)
+    const shortNorm = normalized.slice(0, 40)
+    for (const [sig, ann] of annotationMap) {
+      if (shortNorm.includes(sig.slice(0, 20)) || sig.slice(0, 20).includes(shortNorm.slice(0, 20))) {
+        return ann
+      }
+    }
+    return undefined
+  }
+
   let result = text
 
-  // Render block math: $$...$$ with interactive annotation
-  result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_: string, formula: string) => {
-    return renderFormulaBlock(formula, annotations)
+  // Render block math: $$...$$ with interactive cards
+  result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_match: string, formula: string) => {
+    const trimmed = formula.trim()
+
+    // Render KaTeX
+    let katexHtml = ''
+    try {
+      katexHtml = katex.renderToString(trimmed, { displayMode: true, throwOnError: false })
+    } catch {
+      return `<pre class="if-fallback">${escHtml(trimmed)}</pre>`
+    }
+
+    const annotation = findAnnotation(trimmed)
+
+    if (annotation) {
+      const varRows = annotation.variables.map(v =>
+        `<tr><td class="fvs">${escHtml(v.symbol)}</td><td class="fvn">${escHtml(v.name)}</td><td class="fvm">${escHtml(v.meaning)}</td></tr>`
+      ).join('')
+
+      return `
+      <div class="inline-formula" onclick="event.stopPropagation(); this.classList.toggle('expanded')">
+        <div class="if-display">${katexHtml}</div>
+        <div class="if-toggle"><span>▸ 这个公式在做什么？点击展开查看每个符号的含义</span></div>
+        <div class="if-detail">
+          <div class="if-purpose">${escHtml(annotation.purpose)}</div>
+          <div class="if-table-wrap"><table class="if-table">
+            <thead><tr><th>符号</th><th>名称</th><th>含义</th></tr></thead>
+            <tbody>${varRows}</tbody>
+          </table></div>
+        </div>
+      </div>`
+    }
+
+    // No annotation — show formula with minimal toggle
+    return `
+    <div class="inline-formula no-annot" onclick="event.stopPropagation(); this.classList.toggle('expanded')">
+      <div class="if-display">${katexHtml}</div>
+      <div class="if-toggle"><span>▸ 这是什么？（暂无详细注释）</span></div>
+      <div class="if-detail">
+        <div class="if-purpose">此公式暂无详细注释。以下为 LaTeX 源码：<br><code style="word-break:break-all">${escHtml(trimmed)}</code></div>
+      </div>
+    </div>`
   })
 
-  // Render inline math: $...$ (but not $$)
-  result = result.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_: string, formula: string) => {
+  // Render inline math: $...$ (not $$)
+  result = result.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_match: string, formula: string) => {
     try {
       return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false })
     } catch {
-      return `<code>${formula}</code>`
+      return `<code>${escHtml(formula)}</code>`
     }
   })
 
