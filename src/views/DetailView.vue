@@ -106,105 +106,85 @@ function escHtml(s: string): string {
   return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 }
 
-// Render LaTeX formulas in text with interactive annotations
-function renderLatex(text: string, annotations: FormulaAnnotation[]): string {
-  if (!text) return ''
-
-  // Build a lookup: normalized formula signature → annotation
-  const annotationMap = new Map<string, FormulaAnnotation>()
-  for (const a of annotations) {
-    // Signature: first 40 chars of normalized formula (no whitespace, no newlines)
-    const sig = a.formula.replace(/[\s\n]+/g, '').slice(0, 40)
-    annotationMap.set(sig, a)
-  }
-
-  function findAnnotation(formula: string): FormulaAnnotation | undefined {
-    const normalized = formula.replace(/[\s\n]+/g, '')
-    // Exact match first
-    for (const [sig, ann] of annotationMap) {
-      if (normalized === sig || normalized.startsWith(sig) || sig.startsWith(normalized)) {
-        return ann
-      }
-    }
-    // Substring match
-    for (const [sig, ann] of annotationMap) {
-      if (normalized.includes(sig) || sig.includes(normalized.slice(0, 40))) {
-        return ann
-      }
-    }
-    // Length-normalized match (compare first N chars)
-    const shortNorm = normalized.slice(0, 40)
-    for (const [sig, ann] of annotationMap) {
-      if (shortNorm.includes(sig.slice(0, 20)) || sig.slice(0, 20).includes(shortNorm.slice(0, 20))) {
-        return ann
-      }
-    }
-    return undefined
-  }
-
-  let result = text
-
-  // Render block math: $$...$$ with interactive cards
-  result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_match: string, formula: string) => {
-    const trimmed = formula.trim()
-
-    // Render KaTeX
-    let katexHtml = ''
-    try {
-      katexHtml = katex.renderToString(trimmed, { displayMode: true, throwOnError: false })
-    } catch {
-      return `<pre class="if-fallback">${escHtml(trimmed)}</pre>`
-    }
-
-    const annotation = findAnnotation(trimmed)
-
-    if (annotation) {
-      const varRows = annotation.variables.map(v =>
-        `<tr><td class="fvs">${escHtml(v.symbol)}</td><td class="fvn">${escHtml(v.name)}</td><td class="fvm">${escHtml(v.meaning)}</td></tr>`
-      ).join('')
-
-      return `
-      <div class="inline-formula" onclick="event.stopPropagation(); this.classList.toggle('expanded')">
-        <div class="if-display">${katexHtml}</div>
-        <div class="if-toggle"><span>▸ 这个公式在做什么？点击展开查看每个符号的含义</span></div>
-        <div class="if-detail">
-          <div class="if-purpose">${escHtml(annotation.purpose)}</div>
-          <div class="if-table-wrap"><table class="if-table">
-            <thead><tr><th>符号</th><th>名称</th><th>含义</th></tr></thead>
-            <tbody>${varRows}</tbody>
-          </table></div>
-        </div>
-      </div>`
-    }
-
-    // No annotation — show formula with minimal toggle
-    return `
-    <div class="inline-formula no-annot" onclick="event.stopPropagation(); this.classList.toggle('expanded')">
-      <div class="if-display">${katexHtml}</div>
-      <div class="if-toggle"><span>▸ 这是什么？（暂无详细注释）</span></div>
-      <div class="if-detail">
-        <div class="if-purpose">此公式暂无详细注释。以下为 LaTeX 源码：<br><code style="word-break:break-all">${escHtml(trimmed)}</code></div>
-      </div>
-    </div>`
-  })
-
-  // Render inline math: $...$ (not $$)
-  result = result.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_match: string, formula: string) => {
-    try {
-      return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false })
-    } catch {
-      return `<code>${escHtml(formula)}</code>`
-    }
-  })
-
-  return result
-}
-
 function renderMarkdown(text: string, annotations: FormulaAnnotation[]): string {
   if (!text) return ''
+
   try {
-    const withMath = renderLatex(text, annotations)
-    return marked.parse(withMath) as string
+    // Build annotation lookup
+    const annMap = new Map<string, FormulaAnnotation>()
+    for (const a of annotations) {
+      annMap.set(a.formula.replace(/[\s\n]+/g, '').slice(0, 40), a)
+    }
+
+    function findAnn(f: string): FormulaAnnotation | undefined {
+      const n = f.replace(/[\s\n]+/g, '')
+      for (const [sig, a] of annMap) {
+        if (n === sig || n.startsWith(sig) || sig.startsWith(n) ||
+            n.includes(sig.slice(0, 25)) || sig.includes(n.slice(0, 25))) return a
+      }
+      return undefined
+    }
+
+    // === SPLIT text by $$...$$ markers ===
+    const parts: string[] = []
+    const blockRegex = /\$\$([\s\S]*?)\$\$/g
+    let lastIndex = 0
+    let match: RegExpExecArray | null
+
+    while ((match = blockRegex.exec(text)) !== null) {
+      // Text before this formula
+      if (match.index > lastIndex) {
+        parts.push(text.slice(lastIndex, match.index))
+      }
+      // The formula
+      parts.push('__FORMULA__' + match[1])
+      lastIndex = match.index + match[0].length
+    }
+    // Remaining text after last formula
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex))
+    }
+
+    // If no formulas found, just render markdown
+    if (parts.length === 0 || (parts.length === 1 && !parts[0].startsWith('__FORMULA__'))) {
+      const html = marked.parse(text) as string
+      // Render any inline math $...$
+      return html.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_m: string, f: string) => {
+        try { return katex.renderToString(f.trim(), { displayMode: false, throwOnError: false }) }
+        catch { return `<code>${escHtml(f)}</code>` }
+      })
+    }
+
+    // Render each part
+    const rendered = parts.map(part => {
+      if (part.startsWith('__FORMULA__')) {
+        const formula = part.slice(11).trim()
+        let katexHtml = ''
+        try {
+          katexHtml = katex.renderToString(formula, { displayMode: true, throwOnError: false })
+        } catch {
+          return `<pre class="if-fallback">${escHtml(formula)}</pre>`
+        }
+
+        const ann = findAnn(formula)
+        if (ann) {
+          const varRows = ann.variables.map(v =>
+            `<tr><td class="fvs">${escHtml(v.symbol)}</td><td class="fvn">${escHtml(v.name)}</td><td class="fvm">${escHtml(v.meaning)}</td></tr>`
+          ).join('')
+          return `<div class="inline-formula" onclick="event.stopPropagation();this.classList.toggle('expanded')"><div class="if-display">${katexHtml}</div><div class="if-toggle"><span>▸ 这个公式在做什么？</span></div><div class="if-detail"><div class="if-purpose">${escHtml(ann.purpose)}</div><div class="if-table-wrap"><table class="if-table"><thead><tr><th>符号</th><th>名称</th><th>含义</th></tr></thead><tbody>${varRows}</tbody></table></div></div></div>`
+        }
+        return `<div class="inline-formula no-annot" onclick="event.stopPropagation();this.classList.toggle('expanded')"><div class="if-display">${katexHtml}</div><div class="if-toggle"><span>▸ 这是什么？</span></div><div class="if-detail"><div class="if-purpose">暂无详细注释</div></div></div>`
+      }
+
+      // Markdown text: render with marked, then inline math
+      const mdHtml = marked.parse(part) as string
+      return mdHtml.replace(/(?<!\$)\$(?!\$)([^$\n]+?)\$(?!\$)/g, (_m: string, f: string) => {
+        try { return katex.renderToString(f.trim(), { displayMode: false, throwOnError: false }) }
+        catch { return `<code>${escHtml(f)}</code>` }
+      })
+    })
+
+    return rendered.join('')
   } catch {
     return text.replace(/\n/g, '<br>')
   }
